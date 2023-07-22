@@ -56,8 +56,22 @@ export class PostsService {
     };
   }
 
-  async findAllByCategoryId(categoryId: string) {
-    const posts = await this.postsRepository.findById({
+  async findAllByCategoryId(categoryId: string, limit: number, page: number) {
+    const totalCount = await this.postsRepository.count({
+      where: {
+        categoryId,
+      },
+    });
+    const itemsPerPage = limit || 20;
+    const currentPage = page || 1;
+
+    if (itemsPerPage > 20) {
+      throw new BadRequestException('Items per page cannot be greater than 20');
+    }
+
+    const posts = await this.postsRepository.find({
+      skip: (currentPage - 1) * itemsPerPage,
+      take: itemsPerPage,
       where: {
         categoryId,
       },
@@ -78,11 +92,22 @@ export class PostsService {
       },
     });
 
+    if (currentPage > Math.ceil(totalCount / itemsPerPage)) {
+      throw new BadRequestException('Page not found');
+    }
+
     if (posts.length === 0) {
       throw new NotFoundException('Posts not found');
     }
 
-    return posts;
+    return {
+      data: posts,
+      meta: {
+        totalCount,
+        currentPage,
+        totalPages: Math.ceil(totalCount / itemsPerPage),
+      },
+    };
   }
 
   async create(authorId: string, createPostDto: CreatePostDto) {

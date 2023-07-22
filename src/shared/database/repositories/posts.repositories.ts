@@ -9,15 +9,11 @@ export class PostsRepository {
     return this.prismaService.post.findMany(params);
   }
 
-  findById(categoryId: Prisma.PostFindManyArgs) {
-    return this.prismaService.post.findMany(categoryId);
-  }
-
   create(data: Prisma.PostCreateArgs) {
     return this.prismaService.post.create(data);
   }
 
-  count() {
-    return this.prismaService.post.count();
+  count(params?: Prisma.PostCountArgs) {
+    return this.prismaService.post.count(params);
   }
 }

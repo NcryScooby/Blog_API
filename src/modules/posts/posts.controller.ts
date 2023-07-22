@@ -21,8 +21,16 @@ export class PostsController {
   }
 
   @Get(':categoryId')
-  findAllByCategoryId(@Param('categoryId', ParseUUIDPipe) categoryId: string) {
-    return this.postsService.findAllByCategoryId(categoryId);
+  findAllByCategoryId(
+    @Param('categoryId', ParseUUIDPipe) categoryId: string,
+    @Query('limit') limit: number,
+    @Query('page') page: number,
+  ) {
+    return this.postsService.findAllByCategoryId(
+      categoryId,
+      Number(limit),
+      Number(page),
+    );
   }
 
   @Post()
