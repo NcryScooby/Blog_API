@@ -1,6 +1,7 @@
 import {
   ConflictException,
   Injectable,
+  InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { UsersRepository } from 'src/shared/database/repositories/users.repositories';
@@ -16,54 +17,62 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
   async signin(signInDto: SignInDto) {
-    const { email, password } = signInDto;
+    try {
+      const { email, password } = signInDto;
 
-    const user = await this.usersRepository.findUnique({
-      where: {
-        email,
-      },
-    });
+      const user = await this.usersRepository.findUnique({
+        where: {
+          email,
+        },
+      });
 
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      if (!user) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+
+      const isPasswordValid = await compare(password, user.password);
+
+      if (!isPasswordValid) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+
+      const token = await this.generateToken(user.id);
+
+      return { token };
+    } catch (error) {
+      throw new InternalServerErrorException(error);
     }
-
-    const isPasswordValid = await compare(password, user.password);
-
-    if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    const token = await this.generateToken(user.id);
-
-    return { token };
   }
 
   async signup(signUpDto: SignUpDto) {
-    const { name, email, password } = signUpDto;
+    try {
+      const { name, email, password } = signUpDto;
 
-    const emailExists = await this.usersRepository.findUnique({
-      where: { email },
-      select: { id: true },
-    });
+      const emailExists = await this.usersRepository.findUnique({
+        where: { email },
+        select: { id: true },
+      });
 
-    if (emailExists) {
-      throw new ConflictException('Email already exists');
+      if (emailExists) {
+        throw new ConflictException('Email already exists');
+      }
+
+      const hashedPassword = await hash(password, 10);
+
+      const user = await this.usersRepository.create({
+        data: {
+          name,
+          email,
+          password: hashedPassword,
+        },
+      });
+
+      const token = await this.generateToken(user.id);
+
+      return { token };
+    } catch (error) {
+      throw new InternalServerErrorException(error);
     }
-
-    const hashedPassword = await hash(password, 10);
-
-    const user = await this.usersRepository.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-      },
-    });
-
-    const token = await this.generateToken(user.id);
-
-    return { token };
   }
 
   private async generateToken(userId: string) {
