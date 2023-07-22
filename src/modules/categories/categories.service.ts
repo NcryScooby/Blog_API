@@ -41,7 +41,23 @@ export class CategoriesService {
       select: {
         id: true,
         name: true,
-        Post: true,
+        Post: {
+          select: {
+            id: true,
+            title: true,
+            content: true,
+            image: true,
+            category: true,
+            author: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+            createdAt: true,
+          },
+        },
       },
     });
 
@@ -56,7 +72,23 @@ export class CategoriesService {
       select: {
         id: true,
         name: true,
-        Post: true,
+        Post: {
+          select: {
+            id: true,
+            title: true,
+            content: true,
+            image: true,
+            category: true,
+            author: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+            createdAt: true,
+          },
+        },
       },
     });
 
