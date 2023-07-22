@@ -5,7 +5,7 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class PostsRepository {
   constructor(private readonly prismaService: PrismaService) {}
-  findAll(params: Prisma.PostFindManyArgs) {
+  find(params: Prisma.PostFindManyArgs) {
     return this.prismaService.post.findMany(params);
   }
 
@@ -15,5 +15,9 @@ export class PostsRepository {
 
   create(data: Prisma.PostCreateArgs) {
     return this.prismaService.post.create(data);
+  }
+
+  count() {
+    return this.prismaService.post.count();
   }
 }

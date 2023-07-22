@@ -5,18 +5,19 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  Query,
 } from '@nestjs/common';
+import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostsService } from './posts.service';
-import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  findAll() {
-    return this.postsService.findAll();
+  findAll(@Query('limit') limit: number, @Query('page') page: number) {
+    return this.postsService.findAll(Number(limit), Number(page));
   }
 
   @Get(':categoryId')
