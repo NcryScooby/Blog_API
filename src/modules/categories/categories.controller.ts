@@ -9,6 +9,7 @@ import {
   HttpStatus,
   HttpCode,
   Put,
+  Query,
 } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -24,8 +25,8 @@ export class CategoriesController {
   }
 
   @Get()
-  findAll() {
-    return this.categoriesService.findAll();
+  findAll(@Query('limit') limit: number, @Query('page') page: number) {
+    return this.categoriesService.findAll(Number(limit), Number(page));
   }
 
   @Get(':categoryId')

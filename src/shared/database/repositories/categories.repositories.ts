@@ -28,4 +28,8 @@ export class CategoriesRepository {
   delete(categoryId: Prisma.CategoryDeleteArgs) {
     return this.prismaService.category.delete(categoryId);
   }
+
+  count(params?: Prisma.CategoryCountArgs) {
+    return this.prismaService.category.count(params);
+  }
 }

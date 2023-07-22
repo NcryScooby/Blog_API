@@ -32,8 +32,18 @@ export class CategoriesService {
     return category;
   }
 
-  async findAll() {
+  async findAll(limit: number, page: number) {
+    const totalCount = await this.categoriesRepository.count();
+    const itemsPerPage = limit || 20;
+    const currentPage = page || 1;
+
+    if (itemsPerPage > 20) {
+      throw new BadRequestException('Items per page cannot be greater than 20');
+    }
+
     const categories = await this.categoriesRepository.findAll({
+      skip: (currentPage - 1) * itemsPerPage,
+      take: itemsPerPage,
       select: {
         id: true,
         name: true,
@@ -57,7 +67,22 @@ export class CategoriesService {
       },
     });
 
-    return categories;
+    if (currentPage > Math.ceil(totalCount / itemsPerPage)) {
+      throw new BadRequestException('Page not found');
+    }
+
+    if (categories.length === 0) {
+      throw new BadRequestException('Categories not found');
+    }
+
+    return {
+      data: categories,
+      meta: {
+        totalCount,
+        currentPage,
+        totalPages: Math.ceil(totalCount / itemsPerPage),
+      },
+    };
   }
 
   async findById(categoryId: string) {
