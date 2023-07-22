@@ -5,10 +5,14 @@ import {
 } from '@nestjs/common';
 import { PostsRepository } from 'src/shared/database/repositories/posts.repositories';
 import { CreatePostDto } from './dto/create-post.dto';
+import { CategoriesRepository } from 'src/shared/database/repositories/categories.repositories';
 
 @Injectable()
 export class PostsService {
-  constructor(private readonly postsRepository: PostsRepository) {}
+  constructor(
+    private readonly postsRepository: PostsRepository,
+    private readonly categoriesRepository: CategoriesRepository,
+  ) {}
   async findAll(limit: number, page: number) {
     const totalCount = await this.postsRepository.count();
     const itemsPerPage = limit || 20;
@@ -38,12 +42,12 @@ export class PostsService {
       },
     });
 
-    if (currentPage > Math.ceil(totalCount / itemsPerPage)) {
-      throw new BadRequestException('Page not found');
-    }
-
     if (posts.length === 0) {
       throw new NotFoundException('Posts not found');
+    }
+
+    if (currentPage > Math.ceil(totalCount / itemsPerPage)) {
+      throw new BadRequestException('Page not found');
     }
 
     return {
@@ -57,6 +61,16 @@ export class PostsService {
   }
 
   async findAllByCategoryId(categoryId: string, limit: number, page: number) {
+    const categoryExists = await this.categoriesRepository.findById({
+      where: {
+        id: categoryId,
+      },
+    });
+
+    if (!categoryExists) {
+      throw new BadRequestException('Category not found');
+    }
+
     const totalCount = await this.postsRepository.count({
       where: {
         categoryId,
@@ -92,12 +106,12 @@ export class PostsService {
       },
     });
 
-    if (currentPage > Math.ceil(totalCount / itemsPerPage)) {
-      throw new BadRequestException('Page not found');
-    }
-
     if (posts.length === 0) {
       throw new NotFoundException('Posts not found');
+    }
+
+    if (currentPage > Math.ceil(totalCount / itemsPerPage)) {
+      throw new BadRequestException('Page not found');
     }
 
     return {
