@@ -53,6 +53,11 @@ export class CategoriesService {
       where: {
         id: categoryId,
       },
+      select: {
+        id: true,
+        name: true,
+        Post: true,
+      },
     });
 
     if (!category) {
@@ -68,6 +73,11 @@ export class CategoriesService {
     const categoryExists = await this.categoriesRepository.findById({
       where: {
         id: categoryId,
+      },
+      select: {
+        id: true,
+        name: true,
+        Post: true,
       },
     });
 

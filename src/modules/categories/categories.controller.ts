@@ -28,6 +28,11 @@ export class CategoriesController {
     return this.categoriesService.findAll();
   }
 
+  @Get(':categoryId')
+  findById(@Param('categoryId', ParseUUIDPipe) categoryId: string) {
+    return this.categoriesService.findById(categoryId);
+  }
+
   @Put(':categoryId')
   update(
     @Param('categoryId', ParseUUIDPipe) categoryId: string,
