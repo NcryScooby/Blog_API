@@ -13,8 +13,8 @@ import {
 } from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreatePostDto } from './dto/create-post.dto';
-import { PostsService } from './posts.service';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { PostsService } from './posts.service';
 
 @Controller('posts')
 export class PostsController {

@@ -10,28 +10,6 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 @Injectable()
 export class CategoriesService {
   constructor(private readonly categoriesRepository: CategoriesRepository) {}
-  async create(createCategoryDto: CreateCategoryDto) {
-    const { name } = createCategoryDto;
-
-    const categoryExists = await this.categoriesRepository.findByName({
-      where: {
-        name,
-      },
-    });
-
-    if (categoryExists) {
-      throw new ConflictException('Category name already exists');
-    }
-
-    const category = await this.categoriesRepository.create({
-      data: {
-        name,
-      },
-    });
-
-    return category;
-  }
-
   async findAll(limit: number, page: number) {
     const totalCount = await this.categoriesRepository.count();
     const itemsPerPage = limit || 20;
@@ -116,6 +94,28 @@ export class CategoriesService {
     if (!category) {
       throw new BadRequestException('Category not found');
     }
+
+    return category;
+  }
+
+  async create(createCategoryDto: CreateCategoryDto) {
+    const { name } = createCategoryDto;
+
+    const categoryExists = await this.categoriesRepository.findByName({
+      where: {
+        name,
+      },
+    });
+
+    if (categoryExists) {
+      throw new ConflictException('Category name already exists');
+    }
+
+    const category = await this.categoriesRepository.create({
+      data: {
+        name,
+      },
+    });
 
     return category;
   }

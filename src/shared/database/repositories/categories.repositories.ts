@@ -5,10 +5,6 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class CategoriesRepository {
   constructor(private readonly prismaService: PrismaService) {}
-  create(createDto: Prisma.CategoryCreateArgs) {
-    return this.prismaService.category.create(createDto);
-  }
-
   findAll(params: Prisma.CategoryFindManyArgs) {
     return this.prismaService.category.findMany(params);
   }
@@ -19,6 +15,10 @@ export class CategoriesRepository {
 
   findByName(name: Prisma.CategoryFindFirstArgs) {
     return this.prismaService.category.findFirst(name);
+  }
+
+  create(createDto: Prisma.CategoryCreateArgs) {
+    return this.prismaService.category.create(createDto);
   }
 
   update(params: Prisma.CategoryUpdateArgs) {

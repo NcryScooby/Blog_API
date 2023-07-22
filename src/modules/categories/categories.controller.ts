@@ -19,11 +19,6 @@ import { CategoriesService } from './categories.service';
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
-  @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoriesService.create(createCategoryDto);
-  }
-
   @Get()
   findAll(@Query('limit') limit: number, @Query('page') page: number) {
     return this.categoriesService.findAll(Number(limit), Number(page));
@@ -32,6 +27,11 @@ export class CategoriesController {
   @Get(':categoryId')
   findById(@Param('categoryId', ParseUUIDPipe) categoryId: string) {
     return this.categoriesService.findById(categoryId);
+  }
+
+  @Post()
+  create(@Body() createCategoryDto: CreateCategoryDto) {
+    return this.categoriesService.create(createCategoryDto);
   }
 
   @Put(':categoryId')

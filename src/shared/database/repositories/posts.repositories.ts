@@ -9,16 +9,12 @@ export class PostsRepository {
     return this.prismaService.post.findMany(params);
   }
 
-  create(data: Prisma.PostCreateArgs) {
-    return this.prismaService.post.create(data);
-  }
-
-  count(params?: Prisma.PostCountArgs) {
-    return this.prismaService.post.count(params);
-  }
-
   findById(params: Prisma.PostFindUniqueArgs) {
     return this.prismaService.post.findUnique(params);
+  }
+
+  create(data: Prisma.PostCreateArgs) {
+    return this.prismaService.post.create(data);
   }
 
   update(params: Prisma.PostUpdateArgs) {
@@ -27,5 +23,9 @@ export class PostsRepository {
 
   delete(params: Prisma.PostDeleteArgs) {
     return this.prismaService.post.delete(params);
+  }
+
+  count(params?: Prisma.PostCountArgs) {
+    return this.prismaService.post.count(params);
   }
 }
