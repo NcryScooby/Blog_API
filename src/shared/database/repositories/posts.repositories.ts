@@ -12,4 +12,8 @@ export class PostsRepository {
   findById(categoryId: Prisma.PostFindManyArgs) {
     return this.prismaService.post.findMany(categoryId);
   }
+
+  create(data: Prisma.PostCreateArgs) {
+    return this.prismaService.post.create(data);
+  }
 }

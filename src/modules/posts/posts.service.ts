@@ -4,13 +4,14 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+import { CreatePostDto } from './dto/create-post.dto';
 
 @Injectable()
 export class PostsService {
-  constructor(private readonly PostsRepository: PostsRepository) {}
+  constructor(private readonly postsRepository: PostsRepository) {}
   async findAll() {
     try {
-      const posts = await this.PostsRepository.findAll({
+      const posts = await this.postsRepository.findAll({
         select: {
           id: true,
           title: true,
@@ -39,7 +40,7 @@ export class PostsService {
 
   async findAllByCategoryId(categoryId: string) {
     try {
-      const posts = await this.PostsRepository.findById({
+      const posts = await this.postsRepository.findById({
         where: {
           categoryId,
         },
@@ -65,6 +66,26 @@ export class PostsService {
       }
 
       return posts;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async create(authorId: string, createPostDto: CreatePostDto) {
+    try {
+      const { title, content, image, categoryId } = createPostDto;
+
+      const post = await this.postsRepository.create({
+        data: {
+          title,
+          content,
+          image,
+          authorId,
+          categoryId,
+        },
+      });
+
+      return post;
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

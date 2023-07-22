@@ -1,6 +1,6 @@
 import {
-  IsDateString,
   IsNotEmpty,
+  IsOptional,
   IsString,
   IsUUID,
   MinLength,
@@ -17,17 +17,9 @@ export class CreatePostDto {
   @MinLength(3)
   content: string;
 
+  @IsOptional()
   @IsString()
-  image?: string;
-
-  @IsDateString()
-  @IsNotEmpty()
-  createdAt: Date;
-
-  @IsString()
-  @IsNotEmpty()
-  @IsUUID()
-  authorId: string;
+  image: string;
 
   @IsString()
   @IsNotEmpty()
