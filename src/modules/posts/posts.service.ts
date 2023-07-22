@@ -3,9 +3,9 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { CategoriesRepository } from 'src/shared/database/repositories/categories.repositories';
 import { PostsRepository } from 'src/shared/database/repositories/posts.repositories';
 import { CreatePostDto } from './dto/create-post.dto';
-import { CategoriesRepository } from 'src/shared/database/repositories/categories.repositories';
 
 @Injectable()
 export class PostsService {
@@ -138,5 +138,23 @@ export class PostsService {
     });
 
     return post;
+  }
+
+  async delete(authorId: string, postId: string) {
+    const post = await this.postsRepository.findById({
+      where: {
+        id: postId,
+      },
+    });
+
+    if (post.authorId !== authorId) {
+      throw new NotFoundException('Post not found');
+    }
+
+    await this.postsRepository.delete({
+      where: {
+        id: postId,
+      },
+    });
   }
 }

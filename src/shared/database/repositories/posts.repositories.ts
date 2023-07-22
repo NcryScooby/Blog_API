@@ -16,4 +16,12 @@ export class PostsRepository {
   count(params?: Prisma.PostCountArgs) {
     return this.prismaService.post.count(params);
   }
+
+  findById(params: Prisma.PostFindUniqueArgs) {
+    return this.prismaService.post.findUnique(params);
+  }
+
+  delete(params: Prisma.PostDeleteArgs) {
+    return this.prismaService.post.delete(params);
+  }
 }

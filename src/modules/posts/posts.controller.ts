@@ -1,7 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   ParseUUIDPipe,
   Post,
@@ -39,5 +42,14 @@ export class PostsController {
     @Body() createPostDto: CreatePostDto,
   ) {
     return this.postsService.create(authorId, createPostDto);
+  }
+
+  @Delete(':postId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  delete(
+    @ActiveUserId() authorId: string,
+    @Param('postId', ParseUUIDPipe) postId: string,
+  ) {
+    return this.postsService.delete(authorId, postId);
   }
 }
