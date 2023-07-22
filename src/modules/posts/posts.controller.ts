@@ -8,11 +8,13 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostsService } from './posts.service';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -42,6 +44,15 @@ export class PostsController {
     @Body() createPostDto: CreatePostDto,
   ) {
     return this.postsService.create(authorId, createPostDto);
+  }
+
+  @Put(':postId')
+  update(
+    @ActiveUserId() authorId: string,
+    @Param('postId', ParseUUIDPipe) postId: string,
+    @Body() updatePostDto: UpdatePostDto,
+  ) {
+    return this.postsService.update(authorId, postId, updatePostDto);
   }
 
   @Delete(':postId')

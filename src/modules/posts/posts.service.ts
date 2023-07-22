@@ -6,6 +6,7 @@ import {
 import { CategoriesRepository } from 'src/shared/database/repositories/categories.repositories';
 import { PostsRepository } from 'src/shared/database/repositories/posts.repositories';
 import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @Injectable()
 export class PostsService {
@@ -138,6 +139,33 @@ export class PostsService {
     });
 
     return post;
+  }
+
+  async update(authorId: string, postId: string, updatePostDto: UpdatePostDto) {
+    const { title, content, categoryId } = updatePostDto;
+
+    const post = await this.postsRepository.findById({
+      where: {
+        id: postId,
+      },
+    });
+
+    if (post.authorId !== authorId) {
+      throw new NotFoundException('Post not found');
+    }
+
+    const updatedPost = await this.postsRepository.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        title,
+        content,
+        categoryId,
+      },
+    });
+
+    return updatedPost;
   }
 
   async delete(authorId: string, postId: string) {

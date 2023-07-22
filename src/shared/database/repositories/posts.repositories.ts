@@ -21,6 +21,10 @@ export class PostsRepository {
     return this.prismaService.post.findUnique(params);
   }
 
+  update(params: Prisma.PostUpdateArgs) {
+    return this.prismaService.post.update(params);
+  }
+
   delete(params: Prisma.PostDeleteArgs) {
     return this.prismaService.post.delete(params);
   }
