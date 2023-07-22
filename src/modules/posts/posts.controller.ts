@@ -10,8 +10,11 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
+import { MulterUploadImage } from 'src/shared/utils/MulterUploadImage';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostsService } from './posts.service';
@@ -39,11 +42,18 @@ export class PostsController {
   }
 
   @Post()
+  @UseInterceptors(MulterUploadImage)
   create(
     @ActiveUserId() authorId: string,
     @Body() createPostDto: CreatePostDto,
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.postsService.create(authorId, createPostDto);
+    const image = file?.filename;
+
+    return this.postsService.create(authorId, {
+      ...createPostDto,
+      image,
+    });
   }
 
   @Put(':postId')

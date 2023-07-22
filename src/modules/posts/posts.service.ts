@@ -7,6 +7,8 @@ import { CategoriesRepository } from 'src/shared/database/repositories/categorie
 import { PostsRepository } from 'src/shared/database/repositories/posts.repositories';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import * as path from 'path';
+import * as fs from 'fs';
 
 @Injectable()
 export class PostsService {
@@ -175,6 +177,14 @@ export class PostsService {
       },
     });
 
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    if (post.image) {
+      await this.deleteImageFromFolder(post.image);
+    }
+
     if (post.authorId !== authorId) {
       throw new NotFoundException('Post not found');
     }
@@ -184,5 +194,19 @@ export class PostsService {
         id: postId,
       },
     });
+  }
+
+  private async deleteImageFromFolder(image: string) {
+    const imagePath = path.join(__dirname, '../../../uploads/posts', image);
+
+    if (fs.existsSync(imagePath)) {
+      try {
+        await fs.promises.unlink(imagePath);
+      } catch (err) {
+        console.error('Error deleting image:', err);
+      }
+    } else {
+      console.error('Image not found at:', imagePath);
+    }
   }
 }
