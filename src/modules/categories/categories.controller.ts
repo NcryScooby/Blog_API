@@ -20,8 +20,12 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Get()
-  findAll(@Query('limit') limit: number, @Query('page') page: number) {
-    return this.categoriesService.findAll(Number(limit), Number(page));
+  findAll(
+    @Query('name') name: string,
+    @Query('limit') limit: number,
+    @Query('page') page: number,
+  ) {
+    return this.categoriesService.findAll(name, Number(limit), Number(page));
   }
 
   @Get(':categoryId')
