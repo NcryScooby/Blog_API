@@ -34,9 +34,9 @@ model Post {
   content    String
   image      String?
   createdAt  DateTime @default(now()) @map("created_at")
-  author     User     @relation(fields: [authorId], references: [id])
+  author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId   String   @map("author_id") @db.Uuid
-  category   Category @relation(fields: [categoryId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId String   @map("category_id") @db.Uuid
 
   @@map("posts")
