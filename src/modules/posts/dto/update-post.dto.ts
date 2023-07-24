@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, IsUUID, MinLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+  MinLength,
+} from 'class-validator';
 
 export class UpdatePostDto {
   @IsString()
@@ -10,6 +16,11 @@ export class UpdatePostDto {
   @IsNotEmpty()
   @MinLength(3)
   content: string;
+
+  @IsOptional()
+  @IsString({ each: true })
+  @MinLength(3, { each: true })
+  tags: string[];
 
   @IsString()
   @IsNotEmpty()

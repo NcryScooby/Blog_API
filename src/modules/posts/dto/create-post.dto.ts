@@ -21,6 +21,11 @@ export class CreatePostDto {
   @IsString()
   image: string;
 
+  @IsOptional()
+  @IsString({ each: true })
+  @MinLength(3, { each: true })
+  tags: string[];
+
   @IsString()
   @IsNotEmpty()
   @IsUUID()

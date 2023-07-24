@@ -58,6 +58,11 @@ export class PostsController {
     );
   }
 
+  @Get(':postId')
+  findById(@Param('postId', ParseUUIDPipe) postId: string) {
+    return this.postsService.findById(postId);
+  }
+
   @Post()
   @UseInterceptors(MulterUploadImage)
   create(
