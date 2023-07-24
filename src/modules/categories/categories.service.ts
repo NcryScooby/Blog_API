@@ -38,6 +38,7 @@ export class CategoriesService {
             title: true,
             content: true,
             image: true,
+            tags: true,
             author: {
               select: {
                 id: true,
@@ -79,6 +80,7 @@ export class CategoriesService {
             title: true,
             content: true,
             image: true,
+            tags: true,
             author: {
               select: {
                 id: true,
@@ -102,13 +104,13 @@ export class CategoriesService {
   async create(createCategoryDto: CreateCategoryDto) {
     const { name } = createCategoryDto;
 
-    const categoryExists = await this.categoriesRepository.findByName({
+    const categoryNameExists = await this.categoriesRepository.findByName({
       where: {
         name,
       },
     });
 
-    if (categoryExists) {
+    if (categoryNameExists) {
       throw new ConflictException('Category name already exists');
     }
 
@@ -127,11 +129,6 @@ export class CategoriesService {
     const categoryExists = await this.categoriesRepository.findById({
       where: {
         id: categoryId,
-      },
-      select: {
-        id: true,
-        name: true,
-        post: true,
       },
     });
 

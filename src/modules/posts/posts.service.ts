@@ -40,6 +40,7 @@ export class PostsService {
         title: true,
         content: true,
         image: true,
+        tags: true,
         category: true,
         author: {
           select: {
@@ -104,6 +105,7 @@ export class PostsService {
         title: true,
         content: true,
         image: true,
+        tags: true,
         category: true,
         author: {
           select: {
@@ -158,6 +160,7 @@ export class PostsService {
         title: true,
         content: true,
         image: true,
+        tags: true,
         category: true,
         author: {
           select: {
@@ -187,14 +190,78 @@ export class PostsService {
     };
   }
 
+  async findById(postId: string) {
+    const post = await this.postsRepository.findById({
+      where: {
+        id: postId,
+      },
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        image: true,
+        tags: true,
+        category: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+        createdAt: true,
+      },
+    });
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    const relatedPosts = await this.postsRepository.findAll({
+      where: {
+        tags: {
+          hasSome: post.tags,
+        },
+        id: {
+          not: postId,
+        },
+      },
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        image: true,
+        tags: true,
+        category: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+        createdAt: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    return {
+      data: post,
+      relatedPosts: relatedPosts,
+    };
+  }
+
   async create(authorId: string, createPostDto: CreatePostDto) {
-    const { title, content, image, categoryId } = createPostDto;
+    const { title, content, image, tags, categoryId } = createPostDto;
 
     const post = await this.postsRepository.create({
       data: {
         title,
         content,
         image,
+        tags,
         authorId,
         categoryId,
       },
@@ -204,7 +271,7 @@ export class PostsService {
   }
 
   async update(authorId: string, postId: string, updatePostDto: UpdatePostDto) {
-    const { title, content, categoryId } = updatePostDto;
+    const { title, content, tags, categoryId } = updatePostDto;
 
     const post = await this.postsRepository.findById({
       where: {
@@ -223,6 +290,7 @@ export class PostsService {
       data: {
         title,
         content,
+        tags,
         categoryId,
       },
     });
