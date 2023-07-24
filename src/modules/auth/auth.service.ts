@@ -15,7 +15,7 @@ export class AuthService {
     private readonly usersRepository: UsersRepository,
     private readonly jwtService: JwtService,
   ) {}
-  async signin(signInDto: SignInDto) {
+  async signIn(signInDto: SignInDto) {
     const { email, password } = signInDto;
 
     const user = await this.usersRepository.findUnique({
@@ -39,8 +39,8 @@ export class AuthService {
     return { token };
   }
 
-  async signup(signUpDto: SignUpDto) {
-    const { name, email, password } = signUpDto;
+  async signUp(signUpDto: SignUpDto) {
+    const { name, email, password, roleId } = signUpDto;
 
     const emailExists = await this.usersRepository.findUnique({
       where: { email },
@@ -58,6 +58,7 @@ export class AuthService {
         name,
         email,
         password: hashedPassword,
+        roleId,
       },
     });
 

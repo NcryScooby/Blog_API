@@ -26,7 +26,6 @@ export class CreatePostDto {
   @MinLength(3, { each: true })
   tags: string[];
 
-  @IsString()
   @IsNotEmpty()
   @IsUUID()
   categoryId: string;
