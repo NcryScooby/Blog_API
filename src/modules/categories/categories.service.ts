@@ -10,8 +10,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 @Injectable()
 export class CategoriesService {
   constructor(private readonly categoriesRepository: CategoriesRepository) {}
-  async findAll(limit: number, page: number) {
-    const totalCount = await this.categoriesRepository.count();
+  async findAll(name: string, limit: number, page: number) {
     const itemsPerPage = limit || 20;
     const currentPage = page || 1;
 
@@ -19,9 +18,17 @@ export class CategoriesService {
       throw new BadRequestException('Items per page cannot be greater than 20');
     }
 
+    const totalCount = await this.validateTotalCount(name);
+
     const categories = await this.categoriesRepository.findAll({
       skip: (currentPage - 1) * itemsPerPage,
       take: itemsPerPage,
+      where: {
+        name: {
+          contains: name,
+          mode: 'insensitive',
+        },
+      },
       select: {
         id: true,
         name: true,
@@ -31,7 +38,6 @@ export class CategoriesService {
             title: true,
             content: true,
             image: true,
-            category: true,
             author: {
               select: {
                 id: true,
@@ -73,7 +79,6 @@ export class CategoriesService {
             title: true,
             content: true,
             image: true,
-            category: true,
             author: {
               select: {
                 id: true,
@@ -182,5 +187,24 @@ export class CategoriesService {
     });
 
     return category;
+  }
+
+  private async validateTotalCount(name: string) {
+    let totalCount = 0;
+
+    if (name) {
+      totalCount = await this.categoriesRepository.count({
+        where: {
+          name: {
+            contains: name,
+            mode: 'insensitive',
+          },
+        },
+      });
+    } else {
+      totalCount = await this.categoriesRepository.count();
+    }
+
+    return totalCount;
   }
 }
