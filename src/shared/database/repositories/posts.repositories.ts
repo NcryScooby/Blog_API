@@ -1,31 +1,31 @@
 import { PrismaService } from '../prisma.service';
-import { type Prisma } from '@prisma/client';
+import { Post, type Prisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class PostsRepository {
   constructor(private readonly prismaService: PrismaService) {}
-  find(params: Prisma.PostFindManyArgs) {
-    return this.prismaService.post.findMany(params);
+  findAll(argsFind: Prisma.PostFindManyArgs): Promise<Post[]> {
+    return this.prismaService.post.findMany(argsFind);
   }
 
-  findById(params: Prisma.PostFindUniqueArgs) {
-    return this.prismaService.post.findUnique(params);
+  findById(argsFindById: Prisma.PostFindUniqueArgs): Promise<Post> {
+    return this.prismaService.post.findUnique(argsFindById);
   }
 
-  create(data: Prisma.PostCreateArgs) {
-    return this.prismaService.post.create(data);
+  create(argsCreate: Prisma.PostCreateArgs): Promise<Post> {
+    return this.prismaService.post.create(argsCreate);
   }
 
-  update(params: Prisma.PostUpdateArgs) {
-    return this.prismaService.post.update(params);
+  update(argsUpdate: Prisma.PostUpdateArgs): Promise<Post> {
+    return this.prismaService.post.update(argsUpdate);
   }
 
-  delete(params: Prisma.PostDeleteArgs) {
-    return this.prismaService.post.delete(params);
+  delete(argsDelete: Prisma.PostDeleteArgs): Promise<Post> {
+    return this.prismaService.post.delete(argsDelete);
   }
 
-  count(params?: Prisma.PostCountArgs) {
-    return this.prismaService.post.count(params);
+  count(argsCount?: Prisma.PostCountArgs): Promise<number> {
+    return this.prismaService.post.count(argsCount);
   }
 }

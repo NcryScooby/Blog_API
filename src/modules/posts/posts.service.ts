@@ -25,7 +25,7 @@ export class PostsService {
       throw new BadRequestException('Items per page cannot be greater than 20');
     }
 
-    const posts = await this.postsRepository.find({
+    const posts = await this.postsRepository.findAll({
       skip: (currentPage - 1) * itemsPerPage,
       take: itemsPerPage,
       select: {
@@ -86,7 +86,7 @@ export class PostsService {
       },
     });
 
-    const posts = await this.postsRepository.find({
+    const posts = await this.postsRepository.findAll({
       skip: (currentPage - 1) * itemsPerPage,
       take: itemsPerPage,
       where: {
@@ -140,7 +140,7 @@ export class PostsService {
       },
     });
 
-    const posts = await this.postsRepository.find({
+    const posts = await this.postsRepository.findAll({
       skip: (currentPage - 1) * itemsPerPage,
       take: itemsPerPage,
       where: {

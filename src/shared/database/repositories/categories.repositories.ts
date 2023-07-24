@@ -1,35 +1,36 @@
 import { PrismaService } from '../prisma.service';
-import { type Prisma } from '@prisma/client';
+import { Category, type Prisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class CategoriesRepository {
   constructor(private readonly prismaService: PrismaService) {}
-  findAll(params: Prisma.CategoryFindManyArgs) {
-    return this.prismaService.category.findMany(params);
+
+  findAll(argsFindAll: Prisma.CategoryFindManyArgs): Promise<Category[]> {
+    return this.prismaService.category.findMany(argsFindAll);
   }
 
-  findById(categoryId: Prisma.CategoryFindUniqueArgs) {
-    return this.prismaService.category.findUnique(categoryId);
+  findById(argsFindById: Prisma.CategoryFindUniqueArgs): Promise<Category> {
+    return this.prismaService.category.findUnique(argsFindById);
   }
 
-  findByName(name: Prisma.CategoryFindFirstArgs) {
-    return this.prismaService.category.findFirst(name);
+  findByName(argsFindByName: Prisma.CategoryFindFirstArgs): Promise<Category> {
+    return this.prismaService.category.findFirst(argsFindByName);
   }
 
-  create(createDto: Prisma.CategoryCreateArgs) {
-    return this.prismaService.category.create(createDto);
+  create(argsCreate: Prisma.CategoryCreateArgs): Promise<Category> {
+    return this.prismaService.category.create(argsCreate);
   }
 
-  update(params: Prisma.CategoryUpdateArgs) {
-    return this.prismaService.category.update(params);
+  update(argsUpdate: Prisma.CategoryUpdateArgs): Promise<Category> {
+    return this.prismaService.category.update(argsUpdate);
   }
 
-  delete(categoryId: Prisma.CategoryDeleteArgs) {
-    return this.prismaService.category.delete(categoryId);
+  delete(argsDelete: Prisma.CategoryDeleteArgs): Promise<Category> {
+    return this.prismaService.category.delete(argsDelete);
   }
 
-  count(params?: Prisma.CategoryCountArgs) {
-    return this.prismaService.category.count(params);
+  count(argsCount?: Prisma.CategoryCountArgs): Promise<number> {
+    return this.prismaService.category.count(argsCount);
   }
 }
