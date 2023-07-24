@@ -44,6 +44,12 @@ export class CategoriesService {
                 id: true,
                 name: true,
                 email: true,
+                role: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
+                },
               },
             },
             createdAt: true,
@@ -86,6 +92,7 @@ export class CategoriesService {
                 id: true,
                 name: true,
                 email: true,
+                role: true,
               },
             },
             createdAt: true,

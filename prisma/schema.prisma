@@ -16,6 +16,8 @@ model User {
   email    String @unique
   password String
   post     Post[]
+  role     Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId   String @map("role_id") @db.Uuid
 
   @@map("users")
 }
@@ -41,4 +43,12 @@ model Post {
   categoryId String   @map("category_id") @db.Uuid
 
   @@map("posts")
+}
+
+model Role {
+  id   String @id @default(uuid()) @db.Uuid
+  name String
+  user User[]
+
+  @@map("roles")
 }

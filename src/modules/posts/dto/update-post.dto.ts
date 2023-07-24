@@ -22,7 +22,6 @@ export class UpdatePostDto {
   @MinLength(3, { each: true })
   tags: string[];
 
-  @IsString()
   @IsNotEmpty()
   @IsUUID()
   categoryId: string;

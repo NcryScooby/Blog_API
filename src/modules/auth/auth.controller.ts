@@ -11,12 +11,12 @@ export class AuthController {
   @Post('signin')
   @IsPublic()
   authenticate(@Body() signInDto: SignInDto) {
-    return this.authService.signin(signInDto);
+    return this.authService.signIn(signInDto);
   }
 
   @Post('signup')
   @IsPublic()
   create(@Body() signUpDto: SignUpDto) {
-    return this.authService.signup(signUpDto);
+    return this.authService.signUp(signUpDto);
   }
 }
