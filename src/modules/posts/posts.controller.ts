@@ -28,7 +28,7 @@ export class PostsController {
     return this.postsService.findAll(Number(limit), Number(page));
   }
 
-  @Get(':categoryId')
+  @Get('category/:categoryId')
   findAllByCategoryId(
     @Param('categoryId', ParseUUIDPipe) categoryId: string,
     @Query('limit') limit: number,
@@ -36,6 +36,19 @@ export class PostsController {
   ) {
     return this.postsService.findAllByCategoryId(
       categoryId,
+      Number(limit),
+      Number(page),
+    );
+  }
+
+  @Get('author/:authorId')
+  findAllByAuthorId(
+    @Param('authorId', ParseUUIDPipe) authorId: string,
+    @Query('limit') limit: number,
+    @Query('page') page: number,
+  ) {
+    return this.postsService.findAllByAuthorId(
+      authorId,
       Number(limit),
       Number(page),
     );

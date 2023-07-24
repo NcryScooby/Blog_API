@@ -43,6 +43,9 @@ export class PostsService {
         },
         createdAt: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
 
     if (posts.length === 0) {
@@ -64,6 +67,13 @@ export class PostsService {
   }
 
   async findAllByCategoryId(categoryId: string, limit: number, page: number) {
+    const itemsPerPage = limit || 20;
+    const currentPage = page || 1;
+
+    if (itemsPerPage > 20) {
+      throw new BadRequestException('Items per page cannot be greater than 20');
+    }
+
     const categoryExists = await this.categoriesRepository.findById({
       where: {
         id: categoryId,
@@ -79,12 +89,6 @@ export class PostsService {
         categoryId,
       },
     });
-    const itemsPerPage = limit || 20;
-    const currentPage = page || 1;
-
-    if (itemsPerPage > 20) {
-      throw new BadRequestException('Items per page cannot be greater than 20');
-    }
 
     const posts = await this.postsRepository.find({
       skip: (currentPage - 1) * itemsPerPage,
@@ -107,6 +111,9 @@ export class PostsService {
         },
         createdAt: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
 
     if (posts.length === 0) {
@@ -115,6 +122,58 @@ export class PostsService {
 
     if (currentPage > Math.ceil(totalCount / itemsPerPage)) {
       throw new BadRequestException('Page not found');
+    }
+
+    return {
+      data: posts,
+      meta: {
+        totalCount,
+        currentPage,
+        totalPages: Math.ceil(totalCount / itemsPerPage),
+      },
+    };
+  }
+
+  async findAllByAuthorId(authorId: string, limit: number, page: number) {
+    const itemsPerPage = limit || 20;
+    const currentPage = page || 1;
+
+    if (itemsPerPage > 20) {
+      throw new BadRequestException('Items per page cannot be greater than 20');
+    }
+
+    const totalCount = await this.postsRepository.count({
+      where: {
+        authorId,
+      },
+    });
+
+    const posts = await this.postsRepository.find({
+      where: {
+        authorId,
+      },
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        image: true,
+        category: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+        createdAt: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    if (posts.length === 0) {
+      throw new NotFoundException('Posts not found');
     }
 
     return {
