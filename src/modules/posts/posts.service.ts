@@ -16,8 +16,7 @@ export class PostsService {
     private readonly postsRepository: PostsRepository,
     private readonly categoriesRepository: CategoriesRepository,
   ) {}
-  async findAll(limit: number, page: number) {
-    const totalCount = await this.postsRepository.count();
+  async findAll(title: string, limit: number, page: number) {
     const itemsPerPage = limit || 20;
     const currentPage = page || 1;
 
@@ -25,9 +24,17 @@ export class PostsService {
       throw new BadRequestException('Items per page cannot be greater than 20');
     }
 
+    const totalCount = await this.validateTotalCount(title);
+
     const posts = await this.postsRepository.findAll({
       skip: (currentPage - 1) * itemsPerPage,
       take: itemsPerPage,
+      where: {
+        title: {
+          contains: title,
+          mode: 'insensitive',
+        },
+      },
       select: {
         id: true,
         title: true,
@@ -49,7 +56,7 @@ export class PostsService {
     });
 
     if (posts.length === 0) {
-      throw new NotFoundException('Posts not found');
+      throw new NotFoundException('Post not found');
     }
 
     return {
@@ -113,7 +120,7 @@ export class PostsService {
     });
 
     if (posts.length === 0) {
-      throw new NotFoundException('Posts not found');
+      throw new NotFoundException('Post not found');
     }
 
     return {
@@ -167,7 +174,7 @@ export class PostsService {
     });
 
     if (posts.length === 0) {
-      throw new NotFoundException('Posts not found');
+      throw new NotFoundException('Post not found');
     }
 
     return {
@@ -261,5 +268,24 @@ export class PostsService {
     } else {
       console.error('Image not found at:', imagePath);
     }
+  }
+
+  private async validateTotalCount(title: string) {
+    let totalCount = 0;
+
+    if (title) {
+      totalCount = await this.postsRepository.count({
+        where: {
+          title: {
+            contains: title,
+            mode: 'insensitive',
+          },
+        },
+      });
+    } else {
+      totalCount = await this.postsRepository.count();
+    }
+
+    return totalCount;
   }
 }

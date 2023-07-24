@@ -24,8 +24,12 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  findAll(@Query('limit') limit: number, @Query('page') page: number) {
-    return this.postsService.findAll(Number(limit), Number(page));
+  findAll(
+    @Query('title') title: string,
+    @Query('limit') limit: number,
+    @Query('page') page: number,
+  ) {
+    return this.postsService.findAll(title, Number(limit), Number(page));
   }
 
   @Get('category/:categoryId')
