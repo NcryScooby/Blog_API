@@ -52,10 +52,6 @@ export class PostsService {
       throw new NotFoundException('Posts not found');
     }
 
-    if (currentPage > Math.ceil(totalCount / itemsPerPage)) {
-      throw new BadRequestException('Page not found');
-    }
-
     return {
       data: posts,
       meta: {
@@ -120,10 +116,6 @@ export class PostsService {
       throw new NotFoundException('Posts not found');
     }
 
-    if (currentPage > Math.ceil(totalCount / itemsPerPage)) {
-      throw new BadRequestException('Page not found');
-    }
-
     return {
       data: posts,
       meta: {
@@ -149,6 +141,8 @@ export class PostsService {
     });
 
     const posts = await this.postsRepository.find({
+      skip: (currentPage - 1) * itemsPerPage,
+      take: itemsPerPage,
       where: {
         authorId,
       },

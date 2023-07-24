@@ -45,10 +45,6 @@ export class CategoriesService {
       },
     });
 
-    if (currentPage > Math.ceil(totalCount / itemsPerPage)) {
-      throw new BadRequestException('Page not found');
-    }
-
     if (categories.length === 0) {
       throw new BadRequestException('Categories not found');
     }
