@@ -46,7 +46,7 @@ export class CategoriesService {
     });
 
     if (categories.length === 0) {
-      throw new BadRequestException('Categories not found');
+      throw new BadRequestException('Category not found');
     }
 
     return {
