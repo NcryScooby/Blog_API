@@ -32,7 +32,7 @@ export class CategoriesService {
       select: {
         id: true,
         name: true,
-        Post: {
+        post: {
           select: {
             id: true,
             title: true,
@@ -73,7 +73,7 @@ export class CategoriesService {
       select: {
         id: true,
         name: true,
-        Post: {
+        post: {
           select: {
             id: true,
             title: true,
@@ -131,7 +131,7 @@ export class CategoriesService {
       select: {
         id: true,
         name: true,
-        Post: true,
+        post: true,
       },
     });
 
