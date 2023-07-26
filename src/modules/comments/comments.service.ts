@@ -1,8 +1,9 @@
+import { CommentsRepository } from 'src/shared/database/repositories/comments.repositories';
+import { PostsRepository } from 'src/shared/database/repositories/posts.repositories';
+import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { CommentsRepository } from 'src/shared/database/repositories/comments.repositories';
-import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
-import { PostsRepository } from 'src/shared/database/repositories/posts.repositories';
+import { UpdateCommentDto } from './dto/update-comment.dto';
 
 @Injectable()
 export class CommentsService {
@@ -98,6 +99,50 @@ export class CommentsService {
           select: {
             id: true,
             title: true,
+          },
+        },
+      },
+    });
+
+    return comment;
+  }
+
+  async update(
+    authorId: string,
+    commentId: string,
+    updateCommentDto: UpdateCommentDto,
+  ) {
+    const { content } = updateCommentDto;
+
+    const commentExists = await this.commentsRepository.findById({
+      where: {
+        id: commentId,
+      },
+    });
+
+    if (!commentExists) {
+      throw new NotFoundException('Comment not found');
+    }
+
+    if (commentExists.authorId !== authorId) {
+      throw new NotFoundException('Comment not found');
+    }
+
+    const comment = await this.commentsRepository.update({
+      where: {
+        id: commentId,
+      },
+      data: {
+        content,
+      },
+      select: {
+        id: true,
+        content: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
           },
         },
       },

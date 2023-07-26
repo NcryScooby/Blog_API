@@ -18,6 +18,10 @@ export class CommentsRepository {
     return this.prismaService.comment.create(argsCreate);
   }
 
+  update(argsUpdate: Prisma.CommentUpdateArgs): Promise<Comment> {
+    return this.prismaService.comment.update(argsUpdate);
+  }
+
   delete(argsDelete: Prisma.CommentDeleteArgs): Promise<Comment> {
     return this.prismaService.comment.delete(argsDelete);
   }
