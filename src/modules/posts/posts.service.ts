@@ -28,7 +28,7 @@ export class PostsService {
 
     const totalCount = await this.validateTotalCount(title);
 
-    const posts = await this.postsRepository.findAll({
+    const posts = await this.postsRepository.findMany({
       skip: (currentPage - 1) * itemsPerPage,
       take: itemsPerPage,
       where: {
@@ -43,6 +43,21 @@ export class PostsService {
         content: true,
         image: true,
         tags: true,
+        likes: {
+          select: {
+            id: true,
+            authorId: true,
+            createdAt: true,
+          },
+        },
+        comments: {
+          select: {
+            id: true,
+            content: true,
+            authorId: true,
+            createdAt: true,
+          },
+        },
         category: true,
         author: {
           select: {
@@ -85,7 +100,7 @@ export class PostsService {
       throw new BadRequestException('Items per page cannot be greater than 20');
     }
 
-    const categoryExists = await this.categoriesRepository.findById({
+    const categoryExists = await this.categoriesRepository.findUnique({
       where: {
         id: categoryId,
       },
@@ -101,7 +116,7 @@ export class PostsService {
       },
     });
 
-    const posts = await this.postsRepository.findAll({
+    const posts = await this.postsRepository.findMany({
       skip: (currentPage - 1) * itemsPerPage,
       take: itemsPerPage,
       where: {
@@ -113,6 +128,8 @@ export class PostsService {
         content: true,
         image: true,
         tags: true,
+        likes: true,
+        comments: true,
         category: true,
         author: {
           select: {
@@ -161,7 +178,7 @@ export class PostsService {
       },
     });
 
-    const posts = await this.postsRepository.findAll({
+    const posts = await this.postsRepository.findMany({
       skip: (currentPage - 1) * itemsPerPage,
       take: itemsPerPage,
       where: {
@@ -173,6 +190,8 @@ export class PostsService {
         content: true,
         image: true,
         tags: true,
+        likes: true,
+        comments: true,
         category: true,
         author: {
           select: {
@@ -204,7 +223,7 @@ export class PostsService {
   }
 
   async findById(postId: string) {
-    const post = await this.postsRepository.findById({
+    const post = await this.postsRepository.findUnique({
       where: {
         id: postId,
       },
@@ -231,7 +250,7 @@ export class PostsService {
       throw new NotFoundException('Post not found');
     }
 
-    const relatedPosts = await this.postsRepository.findAll({
+    const relatedPosts = await this.postsRepository.findMany({
       where: {
         tags: {
           hasSome: post.tags,
@@ -288,7 +307,7 @@ export class PostsService {
   async update(authorId: string, postId: string, updatePostDto: UpdatePostDto) {
     const { title, content, tags, categoryId } = updatePostDto;
 
-    const post = await this.postsRepository.findById({
+    const post = await this.postsRepository.findUnique({
       where: {
         id: postId,
       },
@@ -314,7 +333,7 @@ export class PostsService {
   }
 
   async delete(authorId: string, postId: string) {
-    const post = await this.postsRepository.findById({
+    const post = await this.postsRepository.findUnique({
       where: {
         id: postId,
       },

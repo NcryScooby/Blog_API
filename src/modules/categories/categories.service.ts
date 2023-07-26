@@ -22,7 +22,7 @@ export class CategoriesService {
 
     const totalCount = await this.validateTotalCount(name);
 
-    const categories = await this.categoriesRepository.findAll({
+    const categories = await this.categoriesRepository.findMany({
       skip: (currentPage - 1) * itemsPerPage,
       take: itemsPerPage,
       where: {
@@ -34,7 +34,7 @@ export class CategoriesService {
       select: {
         id: true,
         name: true,
-        post: {
+        posts: {
           select: {
             id: true,
             title: true,
@@ -78,14 +78,14 @@ export class CategoriesService {
   }
 
   async findById(categoryId: string) {
-    const category = await this.categoriesRepository.findById({
+    const category = await this.categoriesRepository.findUnique({
       where: {
         id: categoryId,
       },
       select: {
         id: true,
         name: true,
-        post: {
+        posts: {
           select: {
             id: true,
             title: true,
@@ -116,7 +116,7 @@ export class CategoriesService {
   async create(createCategoryDto: CreateCategoryDto) {
     const { name } = createCategoryDto;
 
-    const categoryNameExists = await this.categoriesRepository.findByName({
+    const categoryNameExists = await this.categoriesRepository.findFirst({
       where: {
         name,
       },
@@ -138,7 +138,7 @@ export class CategoriesService {
   async update(categoryId: string, updateCategoryDto: CreateCategoryDto) {
     const { name } = updateCategoryDto;
 
-    const categoryExists = await this.categoriesRepository.findById({
+    const categoryExists = await this.categoriesRepository.findUnique({
       where: {
         id: categoryId,
       },
@@ -148,7 +148,7 @@ export class CategoriesService {
       throw new BadRequestException('Category not found');
     }
 
-    const categoryNameExists = await this.categoriesRepository.findByName({
+    const categoryNameExists = await this.categoriesRepository.findFirst({
       where: {
         name,
       },
@@ -179,7 +179,7 @@ export class CategoriesService {
   }
 
   async delete(categoryId: string) {
-    const categoryExists = await this.categoriesRepository.findById({
+    const categoryExists = await this.categoriesRepository.findUnique({
       where: {
         id: categoryId,
       },

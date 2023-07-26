@@ -22,7 +22,7 @@ export class RolesService {
 
     const totalCount = await this.rolesRepository.count();
 
-    const roles = await this.rolesRepository.findAll({
+    const roles = await this.rolesRepository.findMany({
       skip: (currentPage - 1) * itemsPerPage,
       take: itemsPerPage,
       select: {
@@ -58,7 +58,7 @@ export class RolesService {
   async create(createRoleDto: CreateRoleDto) {
     const { name } = createRoleDto;
 
-    const roleNameExists = await this.rolesRepository.findByName({
+    const roleNameExists = await this.rolesRepository.findFirst({
       where: { name },
     });
 

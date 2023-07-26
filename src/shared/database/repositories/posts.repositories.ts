@@ -5,12 +5,12 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class PostsRepository {
   constructor(private readonly prismaService: PrismaService) {}
-  findAll(argsFind: Prisma.PostFindManyArgs): Promise<Post[]> {
-    return this.prismaService.post.findMany(argsFind);
+  findMany(argsFindMany: Prisma.PostFindManyArgs): Promise<Post[]> {
+    return this.prismaService.post.findMany(argsFindMany);
   }
 
-  findById(argsFindById: Prisma.PostFindUniqueArgs): Promise<Post> {
-    return this.prismaService.post.findUnique(argsFindById);
+  findUnique(argsFindUnique: Prisma.PostFindUniqueArgs): Promise<Post> {
+    return this.prismaService.post.findUnique(argsFindUnique);
   }
 
   create(argsCreate: Prisma.PostCreateArgs): Promise<Post> {

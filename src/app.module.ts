@@ -7,6 +7,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 import { PostsModule } from './modules/posts/posts.module';
 import { RolesModule } from './modules/roles/roles.module';
+import { CommentsModule } from './modules/comments/comments.module';
+import { LikesModule } from './modules/likes/likes.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { RolesModule } from './modules/roles/roles.module';
     CategoriesModule,
     PostsModule,
     RolesModule,
+    CommentsModule,
+    LikesModule,
   ],
   controllers: [],
   providers: [
