@@ -5,14 +5,16 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { CategoriesRepository } from 'src/shared/database/repositories/categories.repositories';
+import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
 import { CreateCategoryDto } from './dto/create-category.dto';
 
 @Injectable()
 export class CategoriesService {
   constructor(private readonly categoriesRepository: CategoriesRepository) {}
-  async findAll(name: string, limit: number, page: number) {
-    const itemsPerPage = limit || 20;
-    const currentPage = page || 1;
+  async findAll(name: string, { limit, page, orderBy }: QueryOptions) {
+    const itemsPerPage = Number(limit) || 20;
+    const currentPage = Number(page) || 1;
+    const order = orderBy !== 'asc' && orderBy !== 'desc' ? 'asc' : orderBy;
 
     if (itemsPerPage > 20) {
       throw new BadRequestException('Items per page cannot be greater than 20');
@@ -55,6 +57,9 @@ export class CategoriesService {
             createdAt: true,
           },
         },
+      },
+      orderBy: {
+        name: order,
       },
     });
 

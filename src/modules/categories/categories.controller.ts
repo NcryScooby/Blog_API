@@ -11,6 +11,7 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
+import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoriesService } from './categories.service';
@@ -22,10 +23,9 @@ export class CategoriesController {
   @Get()
   findAll(
     @Query('name') name: string,
-    @Query('limit') limit: number,
-    @Query('page') page: number,
+    @Query() { limit, page, orderBy }: QueryOptions,
   ) {
-    return this.categoriesService.findAll(name, Number(limit), Number(page));
+    return this.categoriesService.findAll(name, { limit, page, orderBy });
   }
 
   @Get(':categoryId')
