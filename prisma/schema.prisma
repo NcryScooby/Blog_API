@@ -15,19 +15,19 @@ model User {
   name     String
   email    String    @unique
   password String
-  post     Post[]
+  posts    Post[]
   role     Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
   roleId   String    @map("role_id") @db.Uuid
-  comment  Comment[]
-  like     Like[]
+  comments Comment[]
+  likes    Like[]
 
   @@map("users")
 }
 
 model Category {
-  id   String @id @default(uuid()) @db.Uuid
-  name String
-  post Post[]
+  id    String @id @default(uuid()) @db.Uuid
+  name  String
+  posts Post[]
 
   @@map("categories")
 }
@@ -37,14 +37,14 @@ model Post {
   title      String
   content    String
   image      String?
-  tag        String[]
+  tags       String[]
   createdAt  DateTime  @default(now()) @map("created_at")
   author     User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId   String    @map("author_id") @db.Uuid
   category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId String    @map("category_id") @db.Uuid
-  comment    Comment[]
-  like       Like[]
+  comments   Comment[]
+  likes      Like[]
 
   @@map("posts")
 }

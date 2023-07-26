@@ -42,9 +42,22 @@ export class PostsService {
         title: true,
         content: true,
         image: true,
-        tag: true,
-        like: true,
-        comment: true,
+        tags: true,
+        likes: {
+          select: {
+            id: true,
+            authorId: true,
+            createdAt: true,
+          },
+        },
+        comments: {
+          select: {
+            id: true,
+            content: true,
+            authorId: true,
+            createdAt: true,
+          },
+        },
         category: true,
         author: {
           select: {
@@ -114,9 +127,9 @@ export class PostsService {
         title: true,
         content: true,
         image: true,
-        tag: true,
-        like: true,
-        comment: true,
+        tags: true,
+        likes: true,
+        comments: true,
         category: true,
         author: {
           select: {
@@ -176,9 +189,9 @@ export class PostsService {
         title: true,
         content: true,
         image: true,
-        tag: true,
-        like: true,
-        comment: true,
+        tags: true,
+        likes: true,
+        comments: true,
         category: true,
         author: {
           select: {
@@ -219,7 +232,7 @@ export class PostsService {
         title: true,
         content: true,
         image: true,
-        tag: true,
+        tags: true,
         category: true,
         author: {
           select: {
@@ -239,8 +252,8 @@ export class PostsService {
 
     const relatedPosts = await this.postsRepository.findAll({
       where: {
-        tag: {
-          hasSome: post.tag,
+        tags: {
+          hasSome: post.tags,
         },
         id: {
           not: postId,
@@ -251,7 +264,7 @@ export class PostsService {
         title: true,
         content: true,
         image: true,
-        tag: true,
+        tags: true,
         category: true,
         author: {
           select: {
@@ -275,14 +288,14 @@ export class PostsService {
   }
 
   async create(authorId: string, createPostDto: CreatePostDto) {
-    const { title, content, image, tag, categoryId } = createPostDto;
+    const { title, content, image, tags, categoryId } = createPostDto;
 
     const post = await this.postsRepository.create({
       data: {
         title,
         content,
         image,
-        tag,
+        tags,
         authorId,
         categoryId,
       },
@@ -292,7 +305,7 @@ export class PostsService {
   }
 
   async update(authorId: string, postId: string, updatePostDto: UpdatePostDto) {
-    const { title, content, tag, categoryId } = updatePostDto;
+    const { title, content, tags, categoryId } = updatePostDto;
 
     const post = await this.postsRepository.findById({
       where: {
@@ -311,7 +324,7 @@ export class PostsService {
       data: {
         title,
         content,
-        tag,
+        tags,
         categoryId,
       },
     });

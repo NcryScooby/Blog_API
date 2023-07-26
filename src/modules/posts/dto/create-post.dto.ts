@@ -24,7 +24,7 @@ export class CreatePostDto {
   @IsOptional()
   @IsString({ each: true })
   @MinLength(3, { each: true })
-  tag: string[];
+  tags: string[];
 
   @IsNotEmpty()
   @IsUUID()

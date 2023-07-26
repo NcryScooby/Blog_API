@@ -34,13 +34,13 @@ export class CategoriesService {
       select: {
         id: true,
         name: true,
-        post: {
+        posts: {
           select: {
             id: true,
             title: true,
             content: true,
             image: true,
-            tag: true,
+            tags: true,
             author: {
               select: {
                 id: true,
@@ -85,13 +85,13 @@ export class CategoriesService {
       select: {
         id: true,
         name: true,
-        post: {
+        posts: {
           select: {
             id: true,
             title: true,
             content: true,
             image: true,
-            tag: true,
+            tags: true,
             author: {
               select: {
                 id: true,
