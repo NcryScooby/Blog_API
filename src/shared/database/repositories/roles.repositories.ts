@@ -6,12 +6,12 @@ import { Injectable } from '@nestjs/common';
 export class RolesRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  findAll(argsFindAll: Prisma.RoleFindManyArgs): Promise<Role[]> {
-    return this.prismaService.role.findMany(argsFindAll);
+  findMany(argsFindMany: Prisma.RoleFindManyArgs): Promise<Role[]> {
+    return this.prismaService.role.findMany(argsFindMany);
   }
 
-  findByName(argsFindByName: Prisma.RoleFindFirstArgs): Promise<Role> {
-    return this.prismaService.role.findFirst(argsFindByName);
+  findFirst(argsFindFirst: Prisma.RoleFindFirstArgs): Promise<Role> {
+    return this.prismaService.role.findFirst(argsFindFirst);
   }
 
   create(argsCreate: Prisma.RoleCreateArgs): Promise<Role> {

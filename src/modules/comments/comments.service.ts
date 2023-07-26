@@ -20,7 +20,7 @@ export class CommentsService {
     const currentPage = Number(page) || 1;
     const order = orderBy !== 'asc' && orderBy !== 'desc' ? 'desc' : orderBy;
 
-    const postExists = await this.postsRepository.findById({
+    const postExists = await this.postsRepository.findUnique({
       where: {
         id: postId,
       },
@@ -36,7 +36,7 @@ export class CommentsService {
       },
     });
 
-    const comments = await this.commentsRepository.findAll({
+    const comments = await this.commentsRepository.findMany({
       skip: (currentPage - 1) * itemsPerPage,
       take: itemsPerPage,
       where: {
@@ -114,7 +114,7 @@ export class CommentsService {
   ) {
     const { content } = updateCommentDto;
 
-    const commentExists = await this.commentsRepository.findById({
+    const commentExists = await this.commentsRepository.findUnique({
       where: {
         id: commentId,
       },
@@ -152,7 +152,7 @@ export class CommentsService {
   }
 
   async delete(authorId: string, commentId: string) {
-    const commentExists = await this.commentsRepository.findById({
+    const commentExists = await this.commentsRepository.findUnique({
       where: {
         id: commentId,
       },

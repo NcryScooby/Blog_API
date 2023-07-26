@@ -10,8 +10,8 @@ export class LikesRepository {
     return this.prismaService.like.findMany(argsFindMany);
   }
 
-  findOne(argsFindOne: Prisma.LikeFindFirstArgs): Promise<Like | null> {
-    return this.prismaService.like.findFirst(argsFindOne);
+  findFirst(argsFindFirst: Prisma.LikeFindFirstArgs): Promise<Like | null> {
+    return this.prismaService.like.findFirst(argsFindFirst);
   }
 
   create(argsCreate: Prisma.LikeCreateArgs): Promise<Like> {

@@ -6,12 +6,14 @@ import { Injectable } from '@nestjs/common';
 export class CommentsRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  findAll(argsFind: Prisma.CommentFindManyArgs): Promise<Comment[]> {
-    return this.prismaService.comment.findMany(argsFind);
+  findMany(argsFindMany: Prisma.CommentFindManyArgs): Promise<Comment[]> {
+    return this.prismaService.comment.findMany(argsFindMany);
   }
 
-  findById(argsFind: Prisma.CommentFindUniqueArgs): Promise<Comment | null> {
-    return this.prismaService.comment.findUnique(argsFind);
+  findUnique(
+    findUnique: Prisma.CommentFindUniqueArgs,
+  ): Promise<Comment | null> {
+    return this.prismaService.comment.findUnique(findUnique);
   }
 
   create(argsCreate: Prisma.CommentCreateArgs): Promise<Comment> {

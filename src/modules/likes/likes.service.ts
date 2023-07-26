@@ -19,7 +19,7 @@ export class LikesService {
     const currentPage = Number(page) || 1;
     const order = orderBy !== 'asc' && orderBy !== 'desc' ? 'desc' : orderBy;
 
-    const postExists = await this.postsRepository.findById({
+    const postExists = await this.postsRepository.findUnique({
       where: {
         id: postId,
       },
@@ -70,7 +70,7 @@ export class LikesService {
   async create(authorId: string, createLikeDto: CreateLikeDto) {
     const { postId } = createLikeDto;
 
-    const postExists = await this.postsRepository.findById({
+    const postExists = await this.postsRepository.findUnique({
       where: {
         id: postId,
       },
@@ -80,7 +80,7 @@ export class LikesService {
       throw new NotFoundException('Post not found');
     }
 
-    const likeExists = await this.likesRepository.findOne({
+    const likeExists = await this.likesRepository.findFirst({
       where: {
         authorId: authorId,
         postId: postId,

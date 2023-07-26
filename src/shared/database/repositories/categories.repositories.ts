@@ -6,16 +6,16 @@ import { Injectable } from '@nestjs/common';
 export class CategoriesRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  findAll(argsFindAll: Prisma.CategoryFindManyArgs): Promise<Category[]> {
-    return this.prismaService.category.findMany(argsFindAll);
+  findMany(argsFindMany: Prisma.CategoryFindManyArgs): Promise<Category[]> {
+    return this.prismaService.category.findMany(argsFindMany);
   }
 
-  findById(argsFindById: Prisma.CategoryFindUniqueArgs): Promise<Category> {
-    return this.prismaService.category.findUnique(argsFindById);
+  findUnique(argsFindUnique: Prisma.CategoryFindUniqueArgs): Promise<Category> {
+    return this.prismaService.category.findUnique(argsFindUnique);
   }
 
-  findByName(argsFindByName: Prisma.CategoryFindFirstArgs): Promise<Category> {
-    return this.prismaService.category.findFirst(argsFindByName);
+  findFirst(argsFindFirst: Prisma.CategoryFindFirstArgs): Promise<Category> {
+    return this.prismaService.category.findFirst(argsFindFirst);
   }
 
   create(argsCreate: Prisma.CategoryCreateArgs): Promise<Category> {
