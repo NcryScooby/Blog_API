@@ -20,7 +20,7 @@ export class UpdatePostDto {
   @IsOptional()
   @IsString({ each: true })
   @MinLength(3, { each: true })
-  tags: string[];
+  tag: string[];
 
   @IsNotEmpty()
   @IsUUID()

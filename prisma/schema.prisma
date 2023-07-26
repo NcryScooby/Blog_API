@@ -11,13 +11,14 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid()) @db.Uuid
+  id       String    @id @default(uuid()) @db.Uuid
   name     String
-  email    String @unique
+  email    String    @unique
   password String
   post     Post[]
-  role     Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  roleId   String @map("role_id") @db.Uuid
+  role     Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId   String    @map("role_id") @db.Uuid
+  comment  Comment[]
 
   @@map("users")
 }
@@ -31,16 +32,19 @@ model Category {
 }
 
 model Post {
-  id         String   @id @default(uuid()) @db.Uuid
+  id         String    @id @default(uuid()) @db.Uuid
   title      String
   content    String
   image      String?
-  tags       String[]
-  createdAt  DateTime @default(now()) @map("created_at")
-  author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId   String   @map("author_id") @db.Uuid
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId String   @map("category_id") @db.Uuid
+  tag        String[]
+  like       Int       @default(0)
+  view       Int       @default(0)
+  createdAt  DateTime  @default(now()) @map("created_at")
+  author     User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId   String    @map("author_id") @db.Uuid
+  category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId String    @map("category_id") @db.Uuid
+  comment    Comment[]
 
   @@map("posts")
 }
@@ -51,4 +55,16 @@ model Role {
   user User[]
 
   @@map("roles")
+}
+
+model Comment {
+  id        String   @id @default(uuid()) @db.Uuid
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String   @map("author_id") @db.Uuid
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String   @map("post_id") @db.Uuid
+
+  @@map("comments")
 }

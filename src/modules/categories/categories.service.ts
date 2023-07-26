@@ -40,7 +40,7 @@ export class CategoriesService {
             title: true,
             content: true,
             image: true,
-            tags: true,
+            tag: true,
             author: {
               select: {
                 id: true,
@@ -91,7 +91,7 @@ export class CategoriesService {
             title: true,
             content: true,
             image: true,
-            tags: true,
+            tag: true,
             author: {
               select: {
                 id: true,
