@@ -105,4 +105,28 @@ export class CommentsService {
 
     return comment;
   }
+
+  async delete(authorId: string, commentId: string) {
+    const commentExists = await this.commentsRepository.findById({
+      where: {
+        id: commentId,
+      },
+    });
+
+    if (!commentExists) {
+      throw new NotFoundException('Comment not found');
+    }
+
+    if (commentExists.authorId !== authorId) {
+      throw new NotFoundException('Comment not found');
+    }
+
+    await this.commentsRepository.delete({
+      where: {
+        id: commentId,
+      },
+    });
+
+    return null;
+  }
 }
