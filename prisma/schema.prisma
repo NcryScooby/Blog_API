@@ -19,6 +19,7 @@ model User {
   role     Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
   roleId   String    @map("role_id") @db.Uuid
   comment  Comment[]
+  like     Like[]
 
   @@map("users")
 }
@@ -37,14 +38,13 @@ model Post {
   content    String
   image      String?
   tag        String[]
-  like       Int       @default(0)
-  view       Int       @default(0)
   createdAt  DateTime  @default(now()) @map("created_at")
   author     User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId   String    @map("author_id") @db.Uuid
   category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId String    @map("category_id") @db.Uuid
   comment    Comment[]
+  like       Like[]
 
   @@map("posts")
 }
@@ -67,4 +67,15 @@ model Comment {
   postId    String   @map("post_id") @db.Uuid
 
   @@map("comments")
+}
+
+model Like {
+  id        String   @id @default(uuid()) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String   @map("author_id") @db.Uuid
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String   @map("post_id") @db.Uuid
+
+  @@map("likes")
 }

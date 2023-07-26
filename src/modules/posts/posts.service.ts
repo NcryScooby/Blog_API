@@ -43,6 +43,8 @@ export class PostsService {
         content: true,
         image: true,
         tag: true,
+        like: true,
+        comment: true,
         category: true,
         author: {
           select: {
@@ -113,6 +115,8 @@ export class PostsService {
         content: true,
         image: true,
         tag: true,
+        like: true,
+        comment: true,
         category: true,
         author: {
           select: {
@@ -173,6 +177,8 @@ export class PostsService {
         content: true,
         image: true,
         tag: true,
+        like: true,
+        comment: true,
         category: true,
         author: {
           select: {
