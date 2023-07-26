@@ -4,15 +4,17 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateRoleDto } from './dto/create-role.dto';
 import { RolesRepository } from 'src/shared/database/repositories/roles.repositories';
+import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
+import { CreateRoleDto } from './dto/create-role.dto';
 
 @Injectable()
 export class RolesService {
   constructor(private readonly rolesRepository: RolesRepository) {}
-  async findAll(limit: number, page: number) {
-    const itemsPerPage = limit || 20;
-    const currentPage = page || 1;
+  async findAll({ limit, page, orderBy }: QueryOptions) {
+    const itemsPerPage = Number(limit) || 20;
+    const currentPage = Number(page) || 1;
+    const order = orderBy !== 'asc' && orderBy !== 'desc' ? 'asc' : orderBy;
 
     if (itemsPerPage > 20) {
       throw new BadRequestException('Items per page cannot be greater than 20');
@@ -33,6 +35,9 @@ export class RolesService {
             email: true,
           },
         },
+      },
+      orderBy: {
+        name: order,
       },
     });
 

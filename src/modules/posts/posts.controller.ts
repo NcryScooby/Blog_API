@@ -14,6 +14,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { MulterUploadImage } from 'src/shared/utils/MulterUploadImage';
+import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -26,36 +27,33 @@ export class PostsController {
   @Get()
   findAll(
     @Query('title') title: string,
-    @Query('limit') limit: number,
-    @Query('page') page: number,
+    @Query() { limit, page, orderBy }: QueryOptions,
   ) {
-    return this.postsService.findAll(title, Number(limit), Number(page));
+    return this.postsService.findAll(title, { limit, page, orderBy });
   }
 
   @Get('category/:categoryId')
   findAllByCategoryId(
     @Param('categoryId', ParseUUIDPipe) categoryId: string,
-    @Query('limit') limit: number,
-    @Query('page') page: number,
+    @Query() { limit, page, orderBy }: QueryOptions,
   ) {
-    return this.postsService.findAllByCategoryId(
-      categoryId,
-      Number(limit),
-      Number(page),
-    );
+    return this.postsService.findAllByCategoryId(categoryId, {
+      limit,
+      page,
+      orderBy,
+    });
   }
 
   @Get('author/:authorId')
   findAllByAuthorId(
     @Param('authorId', ParseUUIDPipe) authorId: string,
-    @Query('limit') limit: number,
-    @Query('page') page: number,
+    @Query() { limit, page, orderBy }: QueryOptions,
   ) {
-    return this.postsService.findAllByAuthorId(
-      authorId,
-      Number(limit),
-      Number(page),
-    );
+    return this.postsService.findAllByAuthorId(authorId, {
+      limit,
+      page,
+      orderBy,
+    });
   }
 
   @Get(':postId')

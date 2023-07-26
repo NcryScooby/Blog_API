@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { CategoriesRepository } from 'src/shared/database/repositories/categories.repositories';
 import { PostsRepository } from 'src/shared/database/repositories/posts.repositories';
+import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import * as path from 'path';
@@ -16,9 +17,10 @@ export class PostsService {
     private readonly postsRepository: PostsRepository,
     private readonly categoriesRepository: CategoriesRepository,
   ) {}
-  async findAll(title: string, limit: number, page: number) {
-    const itemsPerPage = limit || 20;
-    const currentPage = page || 1;
+  async findAll(title: string, { limit, page, orderBy }: QueryOptions) {
+    const itemsPerPage = Number(limit) || 20;
+    const currentPage = Number(page) || 1;
+    const order = orderBy !== 'asc' && orderBy !== 'desc' ? 'asc' : orderBy;
 
     if (itemsPerPage > 20) {
       throw new BadRequestException('Items per page cannot be greater than 20');
@@ -53,7 +55,7 @@ export class PostsService {
         createdAt: true,
       },
       orderBy: {
-        createdAt: 'desc',
+        title: order,
       },
     });
 
@@ -71,9 +73,13 @@ export class PostsService {
     };
   }
 
-  async findAllByCategoryId(categoryId: string, limit: number, page: number) {
-    const itemsPerPage = limit || 20;
-    const currentPage = page || 1;
+  async findAllByCategoryId(
+    categoryId: string,
+    { limit, page, orderBy }: QueryOptions,
+  ) {
+    const itemsPerPage = Number(limit) || 20;
+    const currentPage = Number(page) || 1;
+    const order = orderBy !== 'asc' && orderBy !== 'desc' ? 'asc' : orderBy;
 
     if (itemsPerPage > 20) {
       throw new BadRequestException('Items per page cannot be greater than 20');
@@ -119,7 +125,7 @@ export class PostsService {
         createdAt: true,
       },
       orderBy: {
-        createdAt: 'desc',
+        title: order,
       },
     });
 
@@ -137,9 +143,13 @@ export class PostsService {
     };
   }
 
-  async findAllByAuthorId(authorId: string, limit: number, page: number) {
-    const itemsPerPage = limit || 20;
-    const currentPage = page || 1;
+  async findAllByAuthorId(
+    authorId: string,
+    { limit, page, orderBy }: QueryOptions,
+  ) {
+    const itemsPerPage = Number(limit) || 20;
+    const currentPage = Number(page) || 1;
+    const order = orderBy !== 'asc' && orderBy !== 'desc' ? 'asc' : orderBy;
 
     if (itemsPerPage > 20) {
       throw new BadRequestException('Items per page cannot be greater than 20');
@@ -175,7 +185,7 @@ export class PostsService {
         createdAt: true,
       },
       orderBy: {
-        createdAt: 'desc',
+        title: order,
       },
     });
 
