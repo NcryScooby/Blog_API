@@ -3,15 +3,20 @@ import {
   NotFoundException,
   ConflictException,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { JobsRepository } from 'src/shared/database/repositories/jobs.repositories';
 import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
+import { RolesRepository } from 'src/shared/database/repositories/roles.repositories';
 
 @Injectable()
 export class JobsService {
-  constructor(private readonly jobsRepository: JobsRepository) {}
+  constructor(
+    private readonly jobsRepository: JobsRepository,
+    private readonly rolesRepository: RolesRepository,
+  ) {}
   async findAll({ limit, page, orderBy }: QueryOptions) {
     const itemsPerPage = Number(limit) || 20;
     const currentPage = Number(page) || 1;
@@ -49,7 +54,9 @@ export class JobsService {
     };
   }
 
-  async create(createJobDto: CreateJobDto) {
+  async create(createJobDto: CreateJobDto, roleId: string) {
+    await this.validateIsAdminRole(roleId);
+
     const { name } = createJobDto;
 
     const jobNameExists = await this.jobsRepository.findFirst({
@@ -69,7 +76,9 @@ export class JobsService {
     return { job };
   }
 
-  async update(jobId: string, updateJobDto: UpdateJobDto) {
+  async update(jobId: string, updateJobDto: UpdateJobDto, roleId: string) {
+    await this.validateIsAdminRole(roleId);
+
     const { name } = updateJobDto;
 
     const job = await this.jobsRepository.findUnique({
@@ -98,7 +107,9 @@ export class JobsService {
     return { job: updatedJob };
   }
 
-  async delete(jobId: string) {
+  async delete(jobId: string, roleId: string) {
+    await this.validateIsAdminRole(roleId);
+
     const job = await this.jobsRepository.findUnique({
       where: { id: jobId },
     });
@@ -110,5 +121,16 @@ export class JobsService {
     await this.jobsRepository.delete({ where: { id: jobId } });
 
     return null;
+  }
+
+  private async validateIsAdminRole(roleId: string) {
+    const role = await this.rolesRepository.findUnique({
+      where: { id: roleId },
+      select: { name: true },
+    });
+
+    if (role.name !== 'ADMIN') {
+      throw new UnauthorizedException();
+    }
   }
 }

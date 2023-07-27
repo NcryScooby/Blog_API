@@ -16,6 +16,7 @@ import { IsPublic } from 'src/shared/decorators/IsPublic';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { JobsService } from './jobs.service';
+import { ActiveUserRoleId } from 'src/shared/decorators/ActiveUserRoleId';
 
 @Controller('jobs')
 export class JobsController {
@@ -28,21 +29,28 @@ export class JobsController {
   }
 
   @Post()
-  create(@Body() createJobDto: CreateJobDto) {
-    return this.jobsService.create(createJobDto);
+  create(
+    @ActiveUserRoleId() roleId: string,
+    @Body() createJobDto: CreateJobDto,
+  ) {
+    return this.jobsService.create(createJobDto, roleId);
   }
 
   @Put(':jobId')
   update(
+    @ActiveUserRoleId() roleId: string,
     @Param('jobId', ParseUUIDPipe) jobId: string,
     @Body() updateJobDto: UpdateJobDto,
   ) {
-    return this.jobsService.update(jobId, updateJobDto);
+    return this.jobsService.update(jobId, updateJobDto, roleId);
   }
 
   @Delete(':jobId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param('jobId', ParseUUIDPipe) postId: string) {
-    return this.jobsService.delete(postId);
+  delete(
+    @ActiveUserRoleId() roleId: string,
+    @Param('jobId', ParseUUIDPipe) postId: string,
+  ) {
+    return this.jobsService.delete(postId, roleId);
   }
 }

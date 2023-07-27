@@ -3,14 +3,19 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { CategoriesRepository } from 'src/shared/database/repositories/categories.repositories';
 import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { RolesRepository } from 'src/shared/database/repositories/roles.repositories';
 
 @Injectable()
 export class CategoriesService {
-  constructor(private readonly categoriesRepository: CategoriesRepository) {}
+  constructor(
+    private readonly categoriesRepository: CategoriesRepository,
+    private readonly rolesRepository: RolesRepository,
+  ) {}
   async findAll(name: string, { limit, page, orderBy }: QueryOptions) {
     const itemsPerPage = Number(limit) || 20;
     const currentPage = Number(page) || 1;
@@ -113,7 +118,9 @@ export class CategoriesService {
     return { category };
   }
 
-  async create(createCategoryDto: CreateCategoryDto) {
+  async create(createCategoryDto: CreateCategoryDto, roleId: string) {
+    await this.validateIsAdminRole(roleId);
+
     const { name } = createCategoryDto;
 
     const categoryNameExists = await this.categoriesRepository.findFirst({
@@ -135,7 +142,12 @@ export class CategoriesService {
     return { category };
   }
 
-  async update(categoryId: string, updateCategoryDto: CreateCategoryDto) {
+  async update(
+    categoryId: string,
+    updateCategoryDto: CreateCategoryDto,
+    roleId: string,
+  ) {
+    await this.validateIsAdminRole(roleId);
     const { name } = updateCategoryDto;
 
     const categoryExists = await this.categoriesRepository.findUnique({
@@ -178,7 +190,8 @@ export class CategoriesService {
     return { category };
   }
 
-  async delete(categoryId: string) {
+  async delete(categoryId: string, roleId: string) {
+    await this.validateIsAdminRole(roleId);
     const categoryExists = await this.categoriesRepository.findUnique({
       where: {
         id: categoryId,
@@ -215,5 +228,16 @@ export class CategoriesService {
     }
 
     return totalCount;
+  }
+
+  private async validateIsAdminRole(roleId: string) {
+    const role = await this.rolesRepository.findUnique({
+      where: { id: roleId },
+      select: { name: true },
+    });
+
+    if (role.name !== 'ADMIN') {
+      throw new UnauthorizedException();
+    }
   }
 }

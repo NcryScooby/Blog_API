@@ -1,6 +1,7 @@
 import { PostsRepository } from 'src/shared/database/repositories/posts.repositories';
 import { CategoriesRepository } from './repositories/categories.repositories';
 import { CommentsRepository } from './repositories/comments.repositories';
+import { RolesRepository } from './repositories/roles.repositories';
 import { UsersRepository } from './repositories/users.repositories';
 import { LikesRepository } from './repositories/likes.repositories';
 import { JobsRepository } from './repositories/jobs.repositories';
@@ -17,6 +18,7 @@ import { Global, Module } from '@nestjs/common';
     JobsRepository,
     CommentsRepository,
     LikesRepository,
+    RolesRepository,
   ],
   exports: [
     UsersRepository,
@@ -25,6 +27,7 @@ import { Global, Module } from '@nestjs/common';
     JobsRepository,
     CommentsRepository,
     LikesRepository,
+    RolesRepository,
   ],
 })
 export class DatabaseModule {}

@@ -11,6 +11,7 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
+import { ActiveUserRoleId } from 'src/shared/decorators/ActiveUserRoleId';
 import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -34,21 +35,28 @@ export class CategoriesController {
   }
 
   @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoriesService.create(createCategoryDto);
+  create(
+    @ActiveUserRoleId() roleId: string,
+    @Body() createCategoryDto: CreateCategoryDto,
+  ) {
+    return this.categoriesService.create(createCategoryDto, roleId);
   }
 
   @Put(':categoryId')
   update(
+    @ActiveUserRoleId() roleId: string,
     @Param('categoryId', ParseUUIDPipe) categoryId: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
-    return this.categoriesService.update(categoryId, updateCategoryDto);
+    return this.categoriesService.update(categoryId, updateCategoryDto, roleId);
   }
 
   @Delete(':categoryId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param('categoryId', ParseUUIDPipe) categoryId: string) {
-    return this.categoriesService.delete(categoryId);
+  delete(
+    @ActiveUserRoleId() roleId: string,
+    @Param('categoryId', ParseUUIDPipe) categoryId: string,
+  ) {
+    return this.categoriesService.delete(categoryId, roleId);
   }
 }
