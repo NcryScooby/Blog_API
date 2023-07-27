@@ -9,11 +9,16 @@ class Env {
   @IsString()
   @IsNotEmpty()
   dbUrl: string;
+
+  @IsString()
+  @IsNotEmpty()
+  clientUrl: string;
 }
 
 export const env: Env = plainToInstance(Env, {
   dbUrl: process.env.DATABASE_URL,
   jwtSecret: process.env.JWT_SECRET,
+  clientUrl: process.env.CLIENT_URL,
 });
 
 const errors = validateSync(env);
