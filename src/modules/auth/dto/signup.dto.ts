@@ -24,5 +24,5 @@ export class SignUpDto {
 
   @IsNotEmpty()
   @IsUUID()
-  roleId: string;
+  jobId: string;
 }

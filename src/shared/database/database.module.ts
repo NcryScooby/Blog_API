@@ -2,8 +2,8 @@ import { PostsRepository } from 'src/shared/database/repositories/posts.reposito
 import { CategoriesRepository } from './repositories/categories.repositories';
 import { CommentsRepository } from './repositories/comments.repositories';
 import { UsersRepository } from './repositories/users.repositories';
-import { RolesRepository } from './repositories/roles.repositories';
 import { LikesRepository } from './repositories/likes.repositories';
+import { JobsRepository } from './repositories/jobs.repositories';
 import { PrismaService } from './prisma.service';
 import { Global, Module } from '@nestjs/common';
 
@@ -14,7 +14,7 @@ import { Global, Module } from '@nestjs/common';
     UsersRepository,
     CategoriesRepository,
     PostsRepository,
-    RolesRepository,
+    JobsRepository,
     CommentsRepository,
     LikesRepository,
   ],
@@ -22,7 +22,7 @@ import { Global, Module } from '@nestjs/common';
     UsersRepository,
     CategoriesRepository,
     PostsRepository,
-    RolesRepository,
+    JobsRepository,
     CommentsRepository,
     LikesRepository,
   ],

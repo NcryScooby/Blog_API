@@ -46,7 +46,7 @@ export class CategoriesService {
                 id: true,
                 name: true,
                 email: true,
-                role: {
+                job: {
                   select: {
                     id: true,
                     name: true,
@@ -97,7 +97,7 @@ export class CategoriesService {
                 id: true,
                 name: true,
                 email: true,
-                role: true,
+                job: true,
               },
             },
             createdAt: true,

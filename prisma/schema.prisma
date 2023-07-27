@@ -16,8 +16,8 @@ model User {
   email    String    @unique
   password String
   posts    Post[]
-  role     Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  roleId   String    @map("role_id") @db.Uuid
+  job      Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  jobId    String    @map("job_id") @db.Uuid
   comments Comment[]
   likes    Like[]
 
@@ -49,12 +49,12 @@ model Post {
   @@map("posts")
 }
 
-model Role {
+model Job {
   id   String @id @default(uuid()) @db.Uuid
   name String
   user User[]
 
-  @@map("roles")
+  @@map("jobs")
 }
 
 model Comment {
