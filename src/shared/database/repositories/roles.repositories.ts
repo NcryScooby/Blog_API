@@ -22,6 +22,10 @@ export class RolesRepository {
     return this.prismaService.role.create(argsCreate);
   }
 
+  update(argsUpdate: Prisma.RoleUpdateArgs): Promise<Role> {
+    return this.prismaService.role.update(argsUpdate);
+  }
+
   delete(argsDelete: Prisma.RoleDeleteArgs): Promise<Role> {
     return this.prismaService.role.delete(argsDelete);
   }

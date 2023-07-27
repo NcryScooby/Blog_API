@@ -1,18 +1,20 @@
 import {
+  ParseUUIDPipe,
   Controller,
+  HttpStatus,
+  HttpCode,
+  Param,
+  Delete,
+  Query,
   Post,
   Body,
   Get,
-  Query,
-  Delete,
-  HttpCode,
-  HttpStatus,
-  ParseUUIDPipe,
-  Param,
+  Put,
 } from '@nestjs/common';
 import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
 import { IsPublic } from 'src/shared/decorators/IsPublic';
 import { CreateRoleDto } from './dto/create-role.dto';
+import { UpdateRoleDto } from './dto/update-role.dto';
 import { RolesService } from './roles.service';
 
 @Controller('roles')
@@ -28,6 +30,14 @@ export class RolesController {
   @Post()
   create(@Body() createRoleDto: CreateRoleDto) {
     return this.rolesService.create(createRoleDto);
+  }
+
+  @Put(':roleId')
+  update(
+    @Param('roleId', ParseUUIDPipe) roleId: string,
+    @Body() updateRoleDto: UpdateRoleDto,
+  ) {
+    return this.rolesService.update(roleId, updateRoleDto);
   }
 
   @Delete(':roleId')

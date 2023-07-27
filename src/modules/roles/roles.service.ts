@@ -1,12 +1,13 @@
 import {
   BadRequestException,
+  NotFoundException,
   ConflictException,
   Injectable,
-  NotFoundException,
 } from '@nestjs/common';
 import { RolesRepository } from 'src/shared/database/repositories/roles.repositories';
 import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
 import { CreateRoleDto } from './dto/create-role.dto';
+import { UpdateRoleDto } from './dto/update-role.dto';
 
 @Injectable()
 export class RolesService {
@@ -66,6 +67,35 @@ export class RolesService {
     });
 
     return { role };
+  }
+
+  async update(roleId: string, updateRoleDto: UpdateRoleDto) {
+    const { name } = updateRoleDto;
+
+    const role = await this.rolesRepository.findUnique({
+      where: { id: roleId },
+    });
+
+    if (!role) {
+      throw new NotFoundException('Role not found');
+    }
+
+    const roleNameExists = await this.rolesRepository.findFirst({
+      where: { name },
+    });
+
+    if (roleNameExists) {
+      throw new ConflictException('Role name already exists');
+    }
+
+    const updatedRole = await this.rolesRepository.update({
+      where: { id: roleId },
+      data: {
+        name,
+      },
+    });
+
+    return { role: updatedRole };
   }
 
   async delete(roleId: string) {
