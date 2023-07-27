@@ -3,7 +3,7 @@ import { CommentsModule } from './modules/comments/comments.module';
 import { DatabaseModule } from './shared/database/database.module';
 import { PostsModule } from './modules/posts/posts.module';
 import { UsersModule } from './modules/users/users.module';
-import { JobsModule } from './modules/offices/jobs.module';
+import { JobsModule } from './modules/jobs/jobs.module';
 import { LikesModule } from './modules/likes/likes.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AuthGuard } from './modules/auth/auth.guard';
