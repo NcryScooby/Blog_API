@@ -1,4 +1,15 @@
-import { Controller, Post, Body, Get, Query } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Query,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  ParseUUIDPipe,
+  Param,
+} from '@nestjs/common';
 import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
 import { IsPublic } from 'src/shared/decorators/IsPublic';
 import { CreateRoleDto } from './dto/create-role.dto';
@@ -17,5 +28,11 @@ export class RolesController {
   @Post()
   create(@Body() createRoleDto: CreateRoleDto) {
     return this.rolesService.create(createRoleDto);
+  }
+
+  @Delete(':roleId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  delete(@Param('roleId', ParseUUIDPipe) postId: string) {
+    return this.rolesService.delete(postId);
   }
 }

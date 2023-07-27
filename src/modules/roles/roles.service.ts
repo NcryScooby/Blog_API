@@ -67,4 +67,18 @@ export class RolesService {
 
     return { role };
   }
+
+  async delete(roleId: string) {
+    const role = await this.rolesRepository.findUnique({
+      where: { id: roleId },
+    });
+
+    if (!role) {
+      throw new NotFoundException('Role not found');
+    }
+
+    await this.rolesRepository.delete({ where: { id: roleId } });
+
+    return null;
+  }
 }
