@@ -79,7 +79,7 @@ export class PostsService {
     }
 
     return {
-      data: posts,
+      posts,
       meta: {
         totalCount,
         currentPage,
@@ -151,7 +151,7 @@ export class PostsService {
     }
 
     return {
-      data: posts,
+      posts,
       meta: {
         totalCount,
         currentPage,
@@ -213,7 +213,7 @@ export class PostsService {
     }
 
     return {
-      data: posts,
+      posts,
       meta: {
         totalCount,
         currentPage,
@@ -282,7 +282,7 @@ export class PostsService {
     });
 
     return {
-      data: post,
+      post,
       relatedPosts: relatedPosts,
     };
   }
@@ -301,7 +301,7 @@ export class PostsService {
       },
     });
 
-    return post;
+    return { post };
   }
 
   async update(authorId: string, postId: string, updatePostDto: UpdatePostDto) {
@@ -329,7 +329,7 @@ export class PostsService {
       },
     });
 
-    return updatedPost;
+    return { post: updatedPost };
   }
 
   async delete(authorId: string, postId: string) {

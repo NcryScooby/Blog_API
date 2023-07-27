@@ -28,13 +28,6 @@ export class RolesService {
       select: {
         id: true,
         name: true,
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
       },
       orderBy: {
         name: order,
@@ -46,7 +39,7 @@ export class RolesService {
     }
 
     return {
-      data: roles,
+      roles,
       meta: {
         totalCount,
         currentPage,
@@ -72,6 +65,6 @@ export class RolesService {
       },
     });
 
-    return role;
+    return { role };
   }
 }

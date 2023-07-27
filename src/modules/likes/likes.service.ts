@@ -58,7 +58,7 @@ export class LikesService {
     });
 
     return {
-      data: likes,
+      likes,
       meta: {
         totalCount,
         currentPage,

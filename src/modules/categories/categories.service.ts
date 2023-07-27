@@ -68,7 +68,7 @@ export class CategoriesService {
     }
 
     return {
-      data: categories,
+      categories,
       meta: {
         totalCount,
         currentPage,
@@ -110,7 +110,7 @@ export class CategoriesService {
       throw new BadRequestException('Category not found');
     }
 
-    return category;
+    return { category };
   }
 
   async create(createCategoryDto: CreateCategoryDto) {
@@ -132,7 +132,7 @@ export class CategoriesService {
       },
     });
 
-    return category;
+    return { category };
   }
 
   async update(categoryId: string, updateCategoryDto: CreateCategoryDto) {
@@ -175,7 +175,7 @@ export class CategoriesService {
       throw new InternalServerErrorException('Category not updated');
     }
 
-    return category;
+    return { category };
   }
 
   async delete(categoryId: string) {
@@ -189,13 +189,13 @@ export class CategoriesService {
       throw new BadRequestException('Category not found');
     }
 
-    const category = await this.categoriesRepository.delete({
+    await this.categoriesRepository.delete({
       where: {
         id: categoryId,
       },
     });
 
-    return category;
+    return null;
   }
 
   private async validateTotalCount(name: string) {

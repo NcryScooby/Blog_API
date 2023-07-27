@@ -59,7 +59,7 @@ export class CommentsService {
     });
 
     return {
-      data: comments,
+      comments,
       meta: {
         totalCount,
         currentPage,
@@ -104,7 +104,7 @@ export class CommentsService {
       },
     });
 
-    return comment;
+    return { comment };
   }
 
   async update(
@@ -148,7 +148,7 @@ export class CommentsService {
       },
     });
 
-    return comment;
+    return { comment };
   }
 
   async delete(authorId: string, commentId: string) {
