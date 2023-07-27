@@ -20,8 +20,8 @@ model User {
   jobId    String    @map("job_id") @db.Uuid
   comments Comment[]
   likes    Like[]
-  role     Role?     @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  roleId   String?   @map("role_id") @db.Uuid
+  role     Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId   String    @map("role_id") @db.Uuid
 
   @@map("users")
 }
