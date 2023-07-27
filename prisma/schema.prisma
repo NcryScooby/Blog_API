@@ -16,10 +16,12 @@ model User {
   email    String    @unique
   password String
   posts    Post[]
-  role     Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  roleId   String    @map("role_id") @db.Uuid
+  job      Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  jobId    String    @map("job_id") @db.Uuid
   comments Comment[]
   likes    Like[]
+  role     Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId   String    @map("role_id") @db.Uuid
 
   @@map("users")
 }
@@ -49,12 +51,12 @@ model Post {
   @@map("posts")
 }
 
-model Role {
+model Job {
   id   String @id @default(uuid()) @db.Uuid
   name String
   user User[]
 
-  @@map("roles")
+  @@map("jobs")
 }
 
 model Comment {
@@ -78,4 +80,19 @@ model Like {
   postId    String   @map("post_id") @db.Uuid
 
   @@map("likes")
+}
+
+enum RoleName {
+  USER
+  ADMIN
+
+  @@map("role_names")
+}
+
+model Role {
+  id    String   @id @default(uuid()) @db.Uuid
+  name  RoleName @unique @default(USER)
+  users User[]
+
+  @@map("roles")
 }

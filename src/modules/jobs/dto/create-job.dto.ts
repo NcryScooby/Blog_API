@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 
-export class CreateRoleDto {
+export class CreateJobDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
