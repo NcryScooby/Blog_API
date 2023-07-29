@@ -70,7 +70,7 @@ export class PostsService {
         createdAt: true,
       },
       orderBy: {
-        title: order,
+        createdAt: order,
       },
     });
 
