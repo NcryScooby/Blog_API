@@ -68,6 +68,7 @@ export class PostsService {
           },
         },
         createdAt: true,
+        views: true,
       },
       orderBy: {
         createdAt: order,
@@ -227,12 +228,26 @@ export class PostsService {
       where: {
         id: postId,
       },
+    });
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    const updatedPost = await this.postsRepository.update({
+      where: { id: postId },
+      data: {
+        views: {
+          increment: 1,
+        },
+      },
       select: {
         id: true,
         title: true,
         content: true,
         image: true,
         tags: true,
+        likes: true,
         category: true,
         author: {
           select: {
@@ -243,12 +258,9 @@ export class PostsService {
           },
         },
         createdAt: true,
+        views: true,
       },
     });
-
-    if (!post) {
-      throw new NotFoundException('Post not found');
-    }
 
     const relatedPosts = await this.postsRepository.findMany({
       where: {
@@ -282,7 +294,7 @@ export class PostsService {
     });
 
     return {
-      post,
+      post: updatedPost,
       relatedPosts: relatedPosts,
     };
   }
