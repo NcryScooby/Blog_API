@@ -22,6 +22,8 @@ export class SignUpDto {
   @MinLength(8)
   password: string;
 
+  avatar: any;
+
   @IsNotEmpty()
   @IsUUID()
   jobId: string;

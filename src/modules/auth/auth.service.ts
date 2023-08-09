@@ -44,7 +44,9 @@ export class AuthService {
   }
 
   async signUp(signUpDto: SignUpDto) {
-    const { name, email, password, jobId } = signUpDto;
+    const { name, email, password, avatar, jobId } = signUpDto;
+
+    console.log(avatar);
 
     const emailExists = await this.usersRepository.findUnique({
       where: { email },
@@ -77,6 +79,7 @@ export class AuthService {
         email,
         password: hashedPassword,
         jobId,
+        avatar,
         roleId: role.id,
       },
     });
