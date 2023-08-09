@@ -15,6 +15,7 @@ model User {
   name     String
   email    String    @unique
   password String
+  avatar   String
   posts    Post[]
   job      Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
   jobId    String    @map("job_id") @db.Uuid

@@ -17,9 +17,7 @@ export class CreatePostDto {
   @MinLength(3)
   content: string;
 
-  @IsOptional()
-  @IsString()
-  image: string;
+  image: any;
 
   @IsOptional()
   @IsString({ each: true })

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -62,13 +63,15 @@ export class PostsController {
   }
 
   @Post()
-  @UseInterceptors(MulterUploadImage)
+  @UseInterceptors(MulterUploadImage('posts'))
   create(
     @ActiveUserId() authorId: string,
     @Body() createPostDto: CreatePostDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
     const image = file?.filename;
+
+    if (!image) throw new BadRequestException('Image is required');
 
     return this.postsService.create(authorId, {
       ...createPostDto,

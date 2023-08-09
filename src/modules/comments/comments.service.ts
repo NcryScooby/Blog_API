@@ -50,6 +50,7 @@ export class CommentsService {
             id: true,
             name: true,
             email: true,
+            avatar: true,
           },
         },
       },
@@ -93,6 +94,7 @@ export class CommentsService {
             id: true,
             name: true,
             email: true,
+            avatar: true,
           },
         },
         post: {
@@ -143,6 +145,7 @@ export class CommentsService {
             id: true,
             name: true,
             email: true,
+            avatar: true,
           },
         },
       },

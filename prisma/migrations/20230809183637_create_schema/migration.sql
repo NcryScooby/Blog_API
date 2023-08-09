@@ -7,8 +7,9 @@ CREATE TABLE "users" (
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "avatar" TEXT NOT NULL,
     "job_id" UUID NOT NULL,
-    "role_id" UUID,
+    "role_id" UUID NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
@@ -26,8 +27,9 @@ CREATE TABLE "posts" (
     "id" UUID NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
-    "image" TEXT,
-    "tags" TEXT[],
+    "image" TEXT NOT NULL,
+    "views" INTEGER NOT NULL DEFAULT 0,
+    "tags" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "author_id" UUID NOT NULL,
     "category_id" UUID NOT NULL,
@@ -67,7 +69,7 @@ CREATE TABLE "likes" (
 -- CreateTable
 CREATE TABLE "roles" (
     "id" UUID NOT NULL,
-    "name" "role_names" NOT NULL,
+    "name" "role_names" NOT NULL DEFAULT 'USER',
 
     CONSTRAINT "roles_pkey" PRIMARY KEY ("id")
 );
