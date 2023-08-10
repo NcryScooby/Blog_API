@@ -252,6 +252,24 @@ export class PostsService {
         tags: true,
         likes: true,
         category: true,
+        comments: {
+          select: {
+            id: true,
+            author: {
+              select: {
+                id: true,
+                name: true,
+                avatar: true,
+                job: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+            content: true,
+          },
+        },
         author: {
           select: {
             id: true,
