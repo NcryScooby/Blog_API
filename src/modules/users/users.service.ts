@@ -8,7 +8,18 @@ export class UsersService {
   async getUserById(userId: string) {
     const user = await this.usersRepository.findUnique({
       where: { id: userId },
-      select: { id: true, name: true, email: true, avatar: true },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        avatar: true,
+        job: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
     });
 
     return { user };

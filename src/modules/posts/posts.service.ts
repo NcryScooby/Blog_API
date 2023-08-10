@@ -269,6 +269,9 @@ export class PostsService {
             },
             content: true,
           },
+          orderBy: {
+            createdAt: 'desc',
+          },
         },
         author: {
           select: {
