@@ -267,6 +267,7 @@ export class PostsService {
                 },
               },
             },
+            createdAt: true,
             content: true,
           },
           orderBy: {
