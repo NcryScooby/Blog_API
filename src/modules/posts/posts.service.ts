@@ -150,7 +150,7 @@ export class PostsService {
         views: true,
       },
       orderBy: {
-        title: order,
+        createdAt: order,
       },
     });
 
