@@ -99,7 +99,10 @@ export class PostsService {
     const currentPage = Number(page) || 1;
     const order = orderBy !== 'asc' && orderBy !== 'desc' ? 'asc' : orderBy;
 
-    const totalCount = await this.validateTotalCount(title);
+    const totalCount = await this.validateTotalCountByCategoryId(
+      title,
+      categoryId,
+    );
 
     if (itemsPerPage > 20) {
       throw new BadRequestException('Items per page cannot be greater than 20');
@@ -435,6 +438,32 @@ export class PostsService {
       });
     } else {
       totalCount = await this.postsRepository.count();
+    }
+
+    return totalCount;
+  }
+
+  private async validateTotalCountByCategoryId(
+    title: string,
+    categoryId: string,
+  ) {
+    let totalCount = 0;
+
+    if (title) {
+      totalCount = await this.postsRepository.count({
+        where: {
+          title: {
+            contains: title,
+            mode: 'insensitive',
+          },
+        },
+      });
+    } else {
+      totalCount = await this.postsRepository.count({
+        where: {
+          categoryId,
+        },
+      });
     }
 
     return totalCount;
