@@ -310,6 +310,7 @@ export class PostsService {
         likes: true,
         category: {
           select: {
+            id: true,
             name: true,
           },
         },
