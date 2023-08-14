@@ -302,22 +302,30 @@ export class PostsService {
         title: true,
         content: true,
         image: true,
-        tags: true,
-        category: true,
+        likes: true,
+        category: {
+          select: {
+            name: true,
+          },
+        },
         author: {
           select: {
-            id: true,
             name: true,
-            email: true,
-            job: true,
+            job: {
+              select: {
+                name: true,
+              },
+            },
             avatar: true,
           },
         },
         createdAt: true,
+        views: true,
       },
       orderBy: {
         createdAt: 'desc',
       },
+      take: 3,
     });
 
     return {
