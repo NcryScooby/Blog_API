@@ -92,11 +92,14 @@ export class PostsService {
 
   async findAllByCategoryId(
     categoryId: string,
+    title: string,
     { limit, page, orderBy }: QueryOptions,
   ) {
     const itemsPerPage = Number(limit) || 20;
     const currentPage = Number(page) || 1;
     const order = orderBy !== 'asc' && orderBy !== 'desc' ? 'asc' : orderBy;
+
+    const totalCount = await this.validateTotalCount(title);
 
     if (itemsPerPage > 20) {
       throw new BadRequestException('Items per page cannot be greater than 20');
@@ -112,17 +115,15 @@ export class PostsService {
       throw new BadRequestException('Category not found');
     }
 
-    const totalCount = await this.postsRepository.count({
-      where: {
-        categoryId,
-      },
-    });
-
     const posts = await this.postsRepository.findMany({
       skip: (currentPage - 1) * itemsPerPage,
       take: itemsPerPage,
       where: {
         categoryId,
+        title: {
+          contains: title,
+          mode: 'insensitive',
+        },
       },
       select: {
         id: true,
@@ -143,6 +144,7 @@ export class PostsService {
           },
         },
         createdAt: true,
+        views: true,
       },
       orderBy: {
         title: order,

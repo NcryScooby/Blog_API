@@ -33,12 +33,13 @@ export class PostsController {
     return this.postsService.findAll(title, { limit, page, orderBy });
   }
 
-  @Get('category/:categoryId')
+  @Get('categories/:categoryId')
   findAllByCategoryId(
     @Param('categoryId', ParseUUIDPipe) categoryId: string,
+    @Query('title') title: string,
     @Query() { limit, page, orderBy }: QueryOptions,
   ) {
-    return this.postsService.findAllByCategoryId(categoryId, {
+    return this.postsService.findAllByCategoryId(categoryId, title, {
       limit,
       page,
       orderBy,
