@@ -170,27 +170,28 @@ export class PostsService {
 
   async findAllByAuthorId(
     authorId: string,
+    title: string,
     { limit, page, orderBy }: QueryOptions,
   ) {
     const itemsPerPage = Number(limit) || 20;
     const currentPage = Number(page) || 1;
     const order = orderBy !== 'asc' && orderBy !== 'desc' ? 'asc' : orderBy;
 
+    const totalCount = await this.validateTotalCountByAuthorId(title, authorId);
+
     if (itemsPerPage > 20) {
       throw new BadRequestException('Items per page cannot be greater than 20');
     }
-
-    const totalCount = await this.postsRepository.count({
-      where: {
-        authorId,
-      },
-    });
 
     const posts = await this.postsRepository.findMany({
       skip: (currentPage - 1) * itemsPerPage,
       take: itemsPerPage,
       where: {
         authorId,
+        title: {
+          contains: title,
+          mode: 'insensitive',
+        },
       },
       select: {
         id: true,
@@ -211,6 +212,7 @@ export class PostsService {
           },
         },
         createdAt: true,
+        views: true,
       },
       orderBy: {
         title: order,
@@ -316,9 +318,12 @@ export class PostsService {
         },
         author: {
           select: {
+            id: true,
             name: true,
+            email: true,
             job: {
               select: {
+                id: true,
                 name: true,
               },
             },
@@ -463,6 +468,29 @@ export class PostsService {
       totalCount = await this.postsRepository.count({
         where: {
           categoryId,
+        },
+      });
+    }
+
+    return totalCount;
+  }
+
+  private async validateTotalCountByAuthorId(title: string, authorId: string) {
+    let totalCount = 0;
+
+    if (title) {
+      totalCount = await this.postsRepository.count({
+        where: {
+          title: {
+            contains: title,
+            mode: 'insensitive',
+          },
+        },
+      });
+    } else {
+      totalCount = await this.postsRepository.count({
+        where: {
+          authorId,
         },
       });
     }

@@ -46,12 +46,13 @@ export class PostsController {
     });
   }
 
-  @Get('author/:authorId')
+  @Get('authors/:authorId')
   findAllByAuthorId(
     @Param('authorId', ParseUUIDPipe) authorId: string,
+    @Query('title') title: string,
     @Query() { limit, page, orderBy }: QueryOptions,
   ) {
-    return this.postsService.findAllByAuthorId(authorId, {
+    return this.postsService.findAllByAuthorId(authorId, title, {
       limit,
       page,
       orderBy,
