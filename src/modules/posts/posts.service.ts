@@ -1,11 +1,13 @@
 import {
   BadRequestException,
-  Injectable,
   NotFoundException,
+  Injectable,
 } from '@nestjs/common';
 import { CategoriesRepository } from 'src/shared/database/repositories/categories.repositories';
 import { PostsRepository } from 'src/shared/database/repositories/posts.repositories';
+import { RolesRepository } from 'src/shared/database/repositories/roles.repositories';
 import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
+import { USER_ROLES } from 'src/shared/constants/user_roles';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import * as path from 'path';
@@ -16,6 +18,7 @@ export class PostsService {
   constructor(
     private readonly postsRepository: PostsRepository,
     private readonly categoriesRepository: CategoriesRepository,
+    private readonly rolesRepository: RolesRepository,
   ) {}
   async findAll(title: string, { limit, page, orderBy }: QueryOptions) {
     const itemsPerPage = Number(limit) || 20;
@@ -390,7 +393,7 @@ export class PostsService {
     return { post: updatedPost };
   }
 
-  async delete(authorId: string, postId: string) {
+  async delete(roleId: string, authorId: string, postId: string) {
     const post = await this.postsRepository.findUnique({
       where: {
         id: postId,
@@ -405,7 +408,9 @@ export class PostsService {
       await this.deleteImageFromFolder(post.image);
     }
 
-    if (post.authorId !== authorId) {
+    const isUserAdmin = await this.validateIsAdminRole(roleId);
+
+    if (post.authorId !== authorId && !isUserAdmin) {
       throw new NotFoundException('Post not found');
     }
 
@@ -496,5 +501,18 @@ export class PostsService {
     }
 
     return totalCount;
+  }
+
+  private async validateIsAdminRole(roleId: string) {
+    const role = await this.rolesRepository.findUnique({
+      where: { id: roleId },
+      select: { name: true },
+    });
+
+    if (role.name === USER_ROLES.ADMIN) {
+      return true;
+    }
+
+    return false;
   }
 }

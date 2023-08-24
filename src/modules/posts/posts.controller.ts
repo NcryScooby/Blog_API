@@ -14,9 +14,10 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
+import { ActiveUserRoleId } from 'src/shared/decorators/ActiveUserRoleId';
 import { MulterUploadImage } from 'src/shared/utils/MulterUploadImage';
-import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
+import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostsService } from './posts.service';
@@ -93,9 +94,10 @@ export class PostsController {
   @Delete(':postId')
   @HttpCode(HttpStatus.NO_CONTENT)
   delete(
+    @ActiveUserRoleId() roleId: string,
     @ActiveUserId() authorId: string,
     @Param('postId', ParseUUIDPipe) postId: string,
   ) {
-    return this.postsService.delete(authorId, postId);
+    return this.postsService.delete(roleId, authorId, postId);
   }
 }

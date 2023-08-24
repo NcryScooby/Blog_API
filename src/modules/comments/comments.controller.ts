@@ -11,6 +11,7 @@ import {
   HttpStatus,
   Put,
 } from '@nestjs/common';
+import { ActiveUserRoleId } from 'src/shared/decorators/ActiveUserRoleId';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -53,9 +54,10 @@ export class CommentsController {
   @Delete(':commentId')
   @HttpCode(HttpStatus.NO_CONTENT)
   delete(
+    @ActiveUserRoleId() roleId: string,
     @ActiveUserId() authorId: string,
     @Param('commentId', ParseUUIDPipe) commentId: string,
   ) {
-    return this.commentsService.delete(authorId, commentId);
+    return this.commentsService.delete(roleId, authorId, commentId);
   }
 }

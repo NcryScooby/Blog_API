@@ -1,7 +1,9 @@
 import { CommentsRepository } from 'src/shared/database/repositories/comments.repositories';
 import { PostsRepository } from 'src/shared/database/repositories/posts.repositories';
+import { RolesRepository } from 'src/shared/database/repositories/roles.repositories';
 import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { USER_ROLES } from 'src/shared/constants/user_roles';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 
@@ -10,6 +12,7 @@ export class CommentsService {
   constructor(
     private readonly commentsRepository: CommentsRepository,
     private readonly postsRepository: PostsRepository,
+    private readonly rolesRepository: RolesRepository,
   ) {}
 
   async findCommentByPostId(
@@ -154,7 +157,7 @@ export class CommentsService {
     return { comment };
   }
 
-  async delete(authorId: string, commentId: string) {
+  async delete(roleId: string, authorId: string, commentId: string) {
     const commentExists = await this.commentsRepository.findUnique({
       where: {
         id: commentId,
@@ -165,7 +168,9 @@ export class CommentsService {
       throw new NotFoundException('Comment not found');
     }
 
-    if (commentExists.authorId !== authorId) {
+    const isUserAdmin = await this.validateIsAdminRole(roleId);
+
+    if (commentExists.authorId !== authorId && !isUserAdmin) {
       throw new NotFoundException('Comment not found');
     }
 
@@ -176,5 +181,18 @@ export class CommentsService {
     });
 
     return null;
+  }
+
+  private async validateIsAdminRole(roleId: string) {
+    const role = await this.rolesRepository.findUnique({
+      where: { id: roleId },
+      select: { name: true },
+    });
+
+    if (role.name === USER_ROLES.ADMIN) {
+      return true;
+    }
+
+    return false;
   }
 }
