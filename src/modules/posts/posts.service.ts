@@ -31,14 +31,7 @@ export class PostsService {
 
     const totalCount = await this.validateTotalCount(title);
 
-    const orderMappings: Record<string, Prisma.PostOrderByWithRelationInput> = {
-      asc: { createdAt: 'asc' },
-      desc: { createdAt: 'desc' },
-      popularity: { likes: { _count: 'desc' } },
-      views: { views: 'desc' },
-    };
-
-    const orderCriteria = orderMappings[orderBy] || { createdAt: 'desc' };
+    const orderCriteria = this.orderCriteria(orderBy);
 
     const posts = await this.postsRepository.findMany({
       skip: (currentPage - 1) * itemsPerPage,
@@ -83,9 +76,7 @@ export class PostsService {
         createdAt: true,
         views: true,
       },
-      orderBy: {
-        ...orderCriteria,
-      },
+      orderBy: orderCriteria,
     });
 
     if (posts.length === 0) {
@@ -109,7 +100,6 @@ export class PostsService {
   ) {
     const itemsPerPage = Number(limit) || 20;
     const currentPage = Number(page) || 1;
-    const order = orderBy !== 'asc' && orderBy !== 'desc' ? 'asc' : orderBy;
 
     const totalCount = await this.validateTotalCountByCategoryId(
       title,
@@ -129,6 +119,8 @@ export class PostsService {
     if (!categoryExists) {
       throw new BadRequestException('Category not found');
     }
+
+    const orderCriteria = this.orderCriteria(orderBy);
 
     const posts = await this.postsRepository.findMany({
       skip: (currentPage - 1) * itemsPerPage,
@@ -161,9 +153,7 @@ export class PostsService {
         createdAt: true,
         views: true,
       },
-      orderBy: {
-        createdAt: order,
-      },
+      orderBy: orderCriteria,
     });
 
     if (posts.length === 0) {
@@ -187,13 +177,14 @@ export class PostsService {
   ) {
     const itemsPerPage = Number(limit) || 20;
     const currentPage = Number(page) || 1;
-    const order = orderBy !== 'asc' && orderBy !== 'desc' ? 'asc' : orderBy;
 
     const totalCount = await this.validateTotalCountByAuthorId(title, authorId);
 
     if (itemsPerPage > 20) {
       throw new BadRequestException('Items per page cannot be greater than 20');
     }
+
+    const orderCriteria = this.orderCriteria(orderBy);
 
     const posts = await this.postsRepository.findMany({
       skip: (currentPage - 1) * itemsPerPage,
@@ -226,9 +217,7 @@ export class PostsService {
         createdAt: true,
         views: true,
       },
-      orderBy: {
-        title: order,
-      },
+      orderBy: orderCriteria,
     });
 
     if (posts.length === 0) {
@@ -523,5 +512,18 @@ export class PostsService {
     }
 
     return false;
+  }
+
+  private orderCriteria(orderBy: string) {
+    const orderMappings: Record<string, Prisma.PostOrderByWithRelationInput> = {
+      asc: { createdAt: 'asc' },
+      desc: { createdAt: 'desc' },
+      popularity: { likes: { _count: 'desc' } },
+      views: { views: 'desc' },
+    };
+
+    const orderCriteria = orderMappings[orderBy] || { createdAt: 'desc' };
+
+    return orderCriteria;
   }
 }
