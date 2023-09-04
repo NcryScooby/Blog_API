@@ -10,6 +10,7 @@ import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
 import { USER_ROLES } from 'src/shared/constants/user_roles';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { Prisma } from '@prisma/client';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -23,13 +24,21 @@ export class PostsService {
   async findAll(title: string, { limit, page, orderBy }: QueryOptions) {
     const itemsPerPage = Number(limit) || 20;
     const currentPage = Number(page) || 1;
-    const order = orderBy !== 'asc' && orderBy !== 'desc' ? 'asc' : orderBy;
 
     if (itemsPerPage > 20) {
       throw new BadRequestException('Items per page cannot be greater than 20');
     }
 
     const totalCount = await this.validateTotalCount(title);
+
+    const orderMappings: Record<string, Prisma.PostOrderByWithRelationInput> = {
+      asc: { createdAt: 'asc' },
+      desc: { createdAt: 'desc' },
+      popularity: { likes: { _count: 'desc' } },
+      views: { views: 'desc' },
+    };
+
+    const orderCriteria = orderMappings[orderBy] || { createdAt: 'desc' };
 
     const posts = await this.postsRepository.findMany({
       skip: (currentPage - 1) * itemsPerPage,
@@ -75,7 +84,7 @@ export class PostsService {
         views: true,
       },
       orderBy: {
-        createdAt: order,
+        ...orderCriteria,
       },
     });
 
