@@ -14,13 +14,13 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { ActiveUserRoleId } from 'src/shared/decorators/ActiveUserRoleId';
-import { MulterUploadImage } from 'src/shared/utils/MulterUploadImage';
-import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
-import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
-import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
-import { PostsService } from './posts.service';
+import { CreatePostDto } from '@modules/posts/dto/create-post.dto';
+import { UpdatePostDto } from '@modules/posts/dto/update-post.dto';
+import { ActiveUserRoleId } from '@decorators/ActiveUserRoleId';
+import { MulterUploadImage } from '@utils/MulterUploadImage';
+import { PostsService } from '@modules/posts/posts.service';
+import { ActiveUserId } from '@decorators/ActiveUserId';
+import { QueryOptions } from '@interfaces/QueryOptions';
 
 @Controller('posts')
 export class PostsController {

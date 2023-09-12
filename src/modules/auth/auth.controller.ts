@@ -6,11 +6,11 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { MulterUploadImage } from 'src/shared/utils/MulterUploadImage';
-import { IsPublic } from 'src/shared/decorators/IsPublic';
-import { AuthService } from './auth.service';
-import { SignUpDto } from './dto/signup.dto';
-import { SignInDto } from './dto/signin.dto';
+import { MulterUploadImage } from '@utils/MulterUploadImage';
+import { AuthService } from '@modules/auth/auth.service';
+import { SignUpDto } from '@modules/auth/dto/signup.dto';
+import { SignInDto } from '@modules/auth/dto/signin.dto';
+import { IsPublic } from '@decorators/IsPublic';
 
 @Controller('auth')
 export class AuthController {

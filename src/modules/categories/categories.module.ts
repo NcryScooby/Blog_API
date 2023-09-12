@@ -1,5 +1,5 @@
-import { CategoriesController } from './categories.controller';
-import { CategoriesService } from './categories.service';
+import { CategoriesController } from '@modules/categories/categories.controller';
+import { CategoriesService } from '@modules/categories/categories.service';
 import { Module } from '@nestjs/common';
 
 @Module({

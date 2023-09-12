@@ -1,11 +1,11 @@
-import { CommentsRepository } from 'src/shared/database/repositories/comments.repositories';
-import { PostsRepository } from 'src/shared/database/repositories/posts.repositories';
-import { RolesRepository } from 'src/shared/database/repositories/roles.repositories';
-import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
+import { CreateCommentDto } from '@modules/comments/dto/create-comment.dto';
+import { UpdateCommentDto } from '@modules/comments/dto/update-comment.dto';
+import { CommentsRepository } from '@repositories/comments.repositories';
+import { PostsRepository } from '@repositories/posts.repositories';
+import { RolesRepository } from '@repositories/roles.repositories';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { USER_ROLES } from 'src/shared/constants/user_roles';
-import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
+import { QueryOptions } from '@interfaces/QueryOptions';
+import { USER_ROLES } from '@constants/user_roles';
 
 @Injectable()
 export class CommentsService {

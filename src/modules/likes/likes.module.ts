@@ -1,6 +1,6 @@
+import { LikesController } from '@modules/likes/likes.controller';
+import { LikesService } from '@modules/likes/likes.service';
 import { Module } from '@nestjs/common';
-import { LikesService } from './likes.service';
-import { LikesController } from './likes.controller';
 
 @Module({
   controllers: [LikesController],

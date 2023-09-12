@@ -11,11 +11,11 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ActiveUserRoleId } from 'src/shared/decorators/ActiveUserRoleId';
-import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
-import { CategoriesService } from './categories.service';
+import { CreateCategoryDto } from '@modules/categories/dto/create-category.dto';
+import { UpdateCategoryDto } from '@modules/categories/dto/update-category.dto';
+import { CategoriesService } from '@modules/categories/categories.service';
+import { ActiveUserRoleId } from '@decorators/ActiveUserRoleId';
+import { QueryOptions } from '@interfaces/QueryOptions';
 
 @Controller('categories')
 export class CategoriesController {

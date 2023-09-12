@@ -1,4 +1,3 @@
-import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import {
   Controller,
   Post,
@@ -8,9 +7,10 @@ import {
   ParseUUIDPipe,
   Query,
 } from '@nestjs/common';
-import { CreateLikeDto } from './dto/create-like.dto';
-import { LikesService } from './likes.service';
-import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
+import { CreateLikeDto } from '@modules/likes/dto/create-like.dto';
+import { LikesService } from '@modules/likes/likes.service';
+import { ActiveUserId } from '@decorators/ActiveUserId';
+import { QueryOptions } from '@interfaces/QueryOptions';
 
 @Controller('posts/likes')
 export class LikesController {

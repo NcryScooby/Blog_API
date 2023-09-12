@@ -3,13 +3,13 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UsersRepository } from 'src/shared/database/repositories/users.repositories';
-import { RolesRepository } from 'src/shared/database/repositories/roles.repositories';
-import { JobsRepository } from 'src/shared/database/repositories/jobs.repositories';
-import { SignInDto } from './dto/signin.dto';
-import { SignUpDto } from './dto/signup.dto';
-import { JwtService } from '@nestjs/jwt';
+import { UsersRepository } from '@repositories/users.repositories';
+import { RolesRepository } from '@repositories/roles.repositories';
+import { JobsRepository } from '@repositories/jobs.repositories';
+import { SignInDto } from '@modules/auth/dto/signin.dto';
+import { SignUpDto } from '@modules/auth/dto/signup.dto';
 import { compare, hash } from 'bcryptjs';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {

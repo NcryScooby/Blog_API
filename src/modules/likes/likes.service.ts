@@ -1,8 +1,8 @@
-import { PostsRepository } from 'src/shared/database/repositories/posts.repositories';
-import { LikesRepository } from 'src/shared/database/repositories/likes.repositories';
+import { PostsRepository } from '@repositories/posts.repositories';
+import { CreateLikeDto } from '@modules/likes/dto/create-like.dto';
+import { LikesRepository } from '@repositories/likes.repositories';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateLikeDto } from './dto/create-like.dto';
-import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
+import { QueryOptions } from '@interfaces/QueryOptions';
 
 @Injectable()
 export class LikesService {

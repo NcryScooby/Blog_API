@@ -1,5 +1,5 @@
-import { JobsController } from './jobs.controller';
-import { JobsService } from './jobs.service';
+import { JobsController } from '@modules/jobs/jobs.controller';
+import { JobsService } from '@modules/jobs/jobs.service';
 import { Module } from '@nestjs/common';
 
 @Module({

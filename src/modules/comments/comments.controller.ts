@@ -11,12 +11,12 @@ import {
   HttpStatus,
   Put,
 } from '@nestjs/common';
-import { ActiveUserRoleId } from 'src/shared/decorators/ActiveUserRoleId';
-import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
-import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
-import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
-import { CommentsService } from './comments.service';
+import { CreateCommentDto } from '@modules/comments/dto/create-comment.dto';
+import { UpdateCommentDto } from '@modules/comments/dto/update-comment.dto';
+import { CommentsService } from '@modules/comments/comments.service';
+import { ActiveUserRoleId } from '@decorators/ActiveUserRoleId';
+import { ActiveUserId } from '@decorators/ActiveUserId';
+import { QueryOptions } from '@interfaces/QueryOptions';
 
 @Controller('posts/comments')
 export class CommentsController {
