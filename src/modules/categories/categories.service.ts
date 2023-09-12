@@ -5,10 +5,10 @@ import {
   InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { CategoriesRepository } from 'src/shared/database/repositories/categories.repositories';
-import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { RolesRepository } from 'src/shared/database/repositories/roles.repositories';
+import { CreateCategoryDto } from '@modules/categories/dto/create-category.dto';
+import { CategoriesRepository } from '@repositories/categories.repositories';
+import { RolesRepository } from '@repositories/roles.repositories';
+import { QueryOptions } from '@interfaces/QueryOptions';
 
 @Injectable()
 export class CategoriesService {

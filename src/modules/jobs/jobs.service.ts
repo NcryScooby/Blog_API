@@ -5,11 +5,11 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { JobsRepository } from 'src/shared/database/repositories/jobs.repositories';
-import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
-import { CreateJobDto } from './dto/create-job.dto';
-import { UpdateJobDto } from './dto/update-job.dto';
-import { RolesRepository } from 'src/shared/database/repositories/roles.repositories';
+import { RolesRepository } from '@repositories/roles.repositories';
+import { JobsRepository } from '@repositories/jobs.repositories';
+import { UpdateJobDto } from '@modules/jobs/dto/update-job.dto';
+import { CreateJobDto } from '@modules/jobs/dto/create-job.dto';
+import { QueryOptions } from '@interfaces/QueryOptions';
 
 @Injectable()
 export class JobsService {

@@ -11,12 +11,12 @@ import {
   Get,
   Put,
 } from '@nestjs/common';
-import { QueryOptions } from 'src/shared/interfaces/QueryOptions';
-import { IsPublic } from 'src/shared/decorators/IsPublic';
-import { CreateJobDto } from './dto/create-job.dto';
-import { UpdateJobDto } from './dto/update-job.dto';
-import { JobsService } from './jobs.service';
-import { ActiveUserRoleId } from 'src/shared/decorators/ActiveUserRoleId';
+import { ActiveUserRoleId } from '@decorators/ActiveUserRoleId';
+import { CreateJobDto } from '@modules/jobs/dto/create-job.dto';
+import { UpdateJobDto } from '@modules/jobs/dto/update-job.dto';
+import { JobsService } from '@modules/jobs/jobs.service';
+import { QueryOptions } from '@interfaces/QueryOptions';
+import { IsPublic } from '@decorators/IsPublic';
 
 @Controller('jobs')
 export class JobsController {
