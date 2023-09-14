@@ -4,12 +4,16 @@ CREATE TYPE "role_names" AS ENUM ('USER', 'ADMIN');
 -- CreateTable
 CREATE TABLE "users" (
     "id" UUID NOT NULL,
+    "username" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "avatar" TEXT NOT NULL,
     "job_id" UUID NOT NULL,
     "role_id" UUID NOT NULL,
+    "country_of_birth" TEXT NOT NULL,
+    "joined_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "bio" TEXT NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
@@ -73,6 +77,9 @@ CREATE TABLE "roles" (
 
     CONSTRAINT "roles_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_username_key" ON "users"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
