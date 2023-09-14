@@ -19,7 +19,8 @@
       "@repositories/*": ["src/shared/database/repositories/*"],
       "@decorators/*": ["src/shared/decorators/*"],
       "@interfaces/*": ["src/shared/interfaces/*"],
-      "@utils/*": ["src/shared/utils/*"]
+      "@utils/*": ["src/shared/utils/*"],
+      "@validators/*": ["src/shared/validators/*"]
     },
     "incremental": true,
     "skipLibCheck": true,
