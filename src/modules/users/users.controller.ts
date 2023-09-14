@@ -1,5 +1,6 @@
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { IsPublic } from '@src/shared/decorators/IsPublic';
 import { ActiveUserId } from '@decorators/ActiveUserId';
-import { Controller, Get, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -14,5 +15,11 @@ export class UsersController {
   @Get(':username')
   getUserByUsername(@Param('username') username: string) {
     return this.usersService.getUserByUsername(username);
+  }
+
+  @Post('validate-email')
+  @IsPublic()
+  validateEmail(@Body('email') email: string) {
+    return this.usersService.validateEmail(email);
   }
 }

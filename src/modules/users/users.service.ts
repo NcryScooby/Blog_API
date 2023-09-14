@@ -106,4 +106,12 @@ export class UsersService {
 
     return { user, lastPosts };
   }
+
+  async validateEmail(email: string) {
+    const user = await this.usersRepository.findUnique({
+      where: { email },
+    });
+
+    return { isEmailAvailable: !user };
+  }
 }
