@@ -1,9 +1,11 @@
+import { IsValidUsername } from '@validators/IsValidUsername';
 import {
   IsEmail,
   IsNotEmpty,
   IsString,
   IsUUID,
   MinLength,
+  Validate,
 } from 'class-validator';
 
 export class SignUpDto {
@@ -11,6 +13,12 @@ export class SignUpDto {
   @IsNotEmpty()
   @MinLength(3)
   name: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(3)
+  @Validate(IsValidUsername)
+  username: string;
 
   @IsString()
   @IsNotEmpty()
@@ -27,4 +35,14 @@ export class SignUpDto {
   @IsNotEmpty()
   @IsUUID()
   jobId: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(3)
+  countryOfBirth: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(3)
+  bio: string;
 }

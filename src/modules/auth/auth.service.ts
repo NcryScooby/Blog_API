@@ -44,9 +44,25 @@ export class AuthService {
   }
 
   async signUp(signUpDto: SignUpDto) {
-    const { name, email, password, avatar, jobId } = signUpDto;
+    const {
+      name,
+      username,
+      email,
+      password,
+      avatar,
+      jobId,
+      countryOfBirth,
+      bio,
+    } = signUpDto;
 
-    console.log(avatar);
+    const usernameExists = await this.usersRepository.findUnique({
+      where: { username },
+      select: { id: true },
+    });
+
+    if (usernameExists) {
+      throw new ConflictException('Username already exists');
+    }
 
     const emailExists = await this.usersRepository.findUnique({
       where: { email },
@@ -76,11 +92,14 @@ export class AuthService {
     const user = await this.usersRepository.create({
       data: {
         name,
+        username,
         email,
         password: hashedPassword,
         jobId,
         avatar,
         roleId: role.id,
+        countryOfBirth,
+        bio,
       },
     });
 

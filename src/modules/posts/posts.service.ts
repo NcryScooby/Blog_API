@@ -349,6 +349,16 @@ export class PostsService {
   async create(authorId: string, createPostDto: CreatePostDto) {
     const { title, content, image, tags, categoryId } = createPostDto;
 
+    const categoryExists = await this.categoriesRepository.findUnique({
+      where: {
+        id: categoryId,
+      },
+    });
+
+    if (!categoryExists) {
+      throw new BadRequestException('Category not found');
+    }
+
     const post = await this.postsRepository.create({
       data: {
         title,
@@ -365,6 +375,16 @@ export class PostsService {
 
   async update(authorId: string, postId: string, updatePostDto: UpdatePostDto) {
     const { title, content, tags, categoryId } = updatePostDto;
+
+    const categoryExists = await this.categoriesRepository.findUnique({
+      where: {
+        id: categoryId,
+      },
+    });
+
+    if (!categoryExists) {
+      throw new BadRequestException('Category not found');
+    }
 
     const post = await this.postsRepository.findUnique({
       where: {
