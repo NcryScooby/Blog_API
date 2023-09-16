@@ -1,6 +1,7 @@
+import { PostsRepository } from '@src/shared/database/repositories/posts.repositories';
 import { UsersRepository } from '@repositories/users.repositories';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PostsRepository } from '@src/shared/database/repositories/posts.repositories';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -39,7 +40,7 @@ export class UsersService {
   }
 
   async getUserByUsername(username: string) {
-    const user = await this.usersRepository.findUnique({
+    const user = (await this.usersRepository.findUnique({
       where: { username },
       select: {
         id: true,
@@ -61,14 +62,30 @@ export class UsersService {
         joinedAt: true,
         countryOfBirth: true,
         bio: true,
+        _count: {
+          select: { posts: true, comments: true, likes: true },
+        },
       },
-    });
+    })) as User & {
+      _count: {
+        posts: number;
+        comments: number;
+        likes: number;
+      };
+    };
 
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    const lastPosts = await this.postsRepository.findMany({
+    const userWithStatistics = {
+      ...user,
+      statistics: user._count,
+    };
+    delete userWithStatistics._count;
+
+    const latestPosts = await this.postsRepository.findMany({
+      where: { authorId: user.id },
       select: {
         id: true,
         title: true,
@@ -84,15 +101,24 @@ export class UsersService {
         author: {
           select: {
             id: true,
+            username: true,
             name: true,
             email: true,
+            avatar: true,
             job: {
               select: {
                 id: true,
                 name: true,
               },
             },
-            avatar: true,
+            role: {
+              select: {
+                name: true,
+              },
+            },
+            joinedAt: true,
+            countryOfBirth: true,
+            bio: true,
           },
         },
         createdAt: true,
@@ -104,7 +130,7 @@ export class UsersService {
       take: 3,
     });
 
-    return { user, lastPosts };
+    return { user: userWithStatistics, latestPosts };
   }
 
   async validateEmail(email: string) {
@@ -113,5 +139,13 @@ export class UsersService {
     });
 
     return { isEmailAvailable: !user };
+  }
+
+  async validateUsername(username: string) {
+    const user = await this.usersRepository.findUnique({
+      where: { username },
+    });
+
+    return { isUsernameAvailable: !user };
   }
 }

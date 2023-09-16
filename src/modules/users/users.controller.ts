@@ -22,4 +22,10 @@ export class UsersController {
   validateEmail(@Body('email') email: string) {
     return this.usersService.validateEmail(email);
   }
+
+  @Post('validate-username')
+  @IsPublic()
+  validateUsername(@Body('username') username: string) {
+    return this.usersService.validateUsername(username);
+  }
 }

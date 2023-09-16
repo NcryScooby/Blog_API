@@ -67,10 +67,24 @@ export class PostsService {
         author: {
           select: {
             id: true,
+            username: true,
             name: true,
             email: true,
-            job: true,
             avatar: true,
+            job: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            role: {
+              select: {
+                name: true,
+              },
+            },
+            joinedAt: true,
+            countryOfBirth: true,
+            bio: true,
           },
         },
         createdAt: true,
@@ -144,10 +158,24 @@ export class PostsService {
         author: {
           select: {
             id: true,
+            username: true,
             name: true,
             email: true,
-            job: true,
             avatar: true,
+            job: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            role: {
+              select: {
+                name: true,
+              },
+            },
+            joinedAt: true,
+            countryOfBirth: true,
+            bio: true,
           },
         },
         createdAt: true,
@@ -208,10 +236,24 @@ export class PostsService {
         author: {
           select: {
             id: true,
+            username: true,
             name: true,
             email: true,
-            job: true,
             avatar: true,
+            job: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            role: {
+              select: {
+                name: true,
+              },
+            },
+            joinedAt: true,
+            countryOfBirth: true,
+            bio: true,
           },
         },
         createdAt: true,
@@ -266,13 +308,24 @@ export class PostsService {
             author: {
               select: {
                 id: true,
+                username: true,
                 name: true,
+                email: true,
                 avatar: true,
                 job: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
+                },
+                role: {
                   select: {
                     name: true,
                   },
                 },
+                joinedAt: true,
+                countryOfBirth: true,
+                bio: true,
               },
             },
             createdAt: true,
@@ -285,10 +338,24 @@ export class PostsService {
         author: {
           select: {
             id: true,
+            username: true,
             name: true,
             email: true,
-            job: true,
             avatar: true,
+            job: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            role: {
+              select: {
+                name: true,
+              },
+            },
+            joinedAt: true,
+            countryOfBirth: true,
+            bio: true,
           },
         },
         createdAt: true,
@@ -320,15 +387,24 @@ export class PostsService {
         author: {
           select: {
             id: true,
+            username: true,
             name: true,
             email: true,
+            avatar: true,
             job: {
               select: {
                 id: true,
                 name: true,
               },
             },
-            avatar: true,
+            role: {
+              select: {
+                name: true,
+              },
+            },
+            joinedAt: true,
+            countryOfBirth: true,
+            bio: true,
           },
         },
         createdAt: true,
