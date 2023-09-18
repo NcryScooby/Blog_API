@@ -3,18 +3,28 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from '@src/app.module';
 import { NestFactory } from '@nestjs/core';
+import { ExpressAdapter } from '@nestjs/platform-express';
 import { env } from '@config/env';
 import * as path from 'path';
+import * as express from 'express';
 
-async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+const server = express();
 
-  app.useGlobalPipes(new ValidationPipe());
-  app.useStaticAssets(path.join(__dirname, '..', './'));
-  app.enableCors({
+async function createNestApp() {
+  const nestApp = await NestFactory.create<NestExpressApplication>(
+    AppModule,
+    new ExpressAdapter(server),
+  );
+
+  nestApp.useGlobalPipes(new ValidationPipe());
+  nestApp.useStaticAssets(path.join(__dirname, '..', './'));
+  nestApp.enableCors({
     origin: env.clientUrl,
   });
 
-  await app.listen(3001);
+  await nestApp.init();
 }
-bootstrap();
+
+createNestApp();
+
+export = server;
