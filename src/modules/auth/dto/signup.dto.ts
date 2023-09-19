@@ -1,4 +1,4 @@
-import { IsValidUsername } from '../../../shared/validators/IsValidUsername';
+import { IsValidUsername } from '@validators/IsValidUsername';
 import {
   IsEmail,
   IsNotEmpty,

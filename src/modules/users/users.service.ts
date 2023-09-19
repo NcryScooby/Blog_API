@@ -1,5 +1,5 @@
 import { PostsRepository } from '@src/shared/database/repositories/posts.repositories';
-import { UsersRepository } from '../../shared/database/repositories/users.repositories';
+import { UsersRepository } from '@repositories/users.repositories';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '@prisma/client';
 

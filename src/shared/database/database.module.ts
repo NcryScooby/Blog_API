@@ -1,11 +1,11 @@
-import { CategoriesRepository } from '../../shared/database/repositories/categories.repositories';
-import { CommentsRepository } from '../../shared/database/repositories/comments.repositories';
-import { PostsRepository } from '../../shared/database/repositories/posts.repositories';
-import { UsersRepository } from '../../shared/database/repositories/users.repositories';
-import { LikesRepository } from '../../shared/database/repositories/likes.repositories';
-import { RolesRepository } from '../../shared/database/repositories/roles.repositories';
-import { JobsRepository } from '../../shared/database/repositories/jobs.repositories';
-import { PrismaService } from '../../shared/database/prisma.service';
+import { CategoriesRepository } from '@repositories/categories.repositories';
+import { CommentsRepository } from '@repositories/comments.repositories';
+import { PostsRepository } from '@repositories/posts.repositories';
+import { UsersRepository } from '@repositories/users.repositories';
+import { LikesRepository } from '@repositories/likes.repositories';
+import { RolesRepository } from '@repositories/roles.repositories';
+import { JobsRepository } from '@repositories/jobs.repositories';
+import { PrismaService } from '@database/prisma.service';
 import { Global, Module } from '@nestjs/common';
 
 @Global()
