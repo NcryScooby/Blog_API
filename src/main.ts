@@ -3,7 +3,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
-import { env } from '@config/env';
+import { env } from './shared/config/env';
 import * as path from 'path';
 
 async function bootstrap() {
