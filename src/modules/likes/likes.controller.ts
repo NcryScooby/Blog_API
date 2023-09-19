@@ -7,10 +7,10 @@ import {
   ParseUUIDPipe,
   Query,
 } from '@nestjs/common';
-import { CreateLikeDto } from '@modules/likes/dto/create-like.dto';
-import { LikesService } from '@modules/likes/likes.service';
-import { ActiveUserId } from '@decorators/ActiveUserId';
-import { QueryOptions } from '@interfaces/QueryOptions';
+import { CreateLikeDto } from '../../modules/likes/dto/create-like.dto';
+import { LikesService } from '../../modules/likes/likes.service';
+import { ActiveUserId } from '../../shared/decorators/ActiveUserId';
+import { QueryOptions } from '../../shared/interfaces/QueryOptions';
 
 @Controller('posts/likes')
 export class LikesController {
