@@ -1,4 +1,5 @@
 import { CategoriesRepository } from '@repositories/categories.repositories';
+import { FavoritesRepository } from './repositories/favorites.repositories';
 import { CommentsRepository } from '@repositories/comments.repositories';
 import { PostsRepository } from '@repositories/posts.repositories';
 import { UsersRepository } from '@repositories/users.repositories';
@@ -19,6 +20,7 @@ import { Global, Module } from '@nestjs/common';
     CommentsRepository,
     LikesRepository,
     RolesRepository,
+    FavoritesRepository,
   ],
   exports: [
     UsersRepository,
@@ -28,6 +30,7 @@ import { Global, Module } from '@nestjs/common';
     CommentsRepository,
     LikesRepository,
     RolesRepository,
+    FavoritesRepository,
   ],
 })
 export class DatabaseModule {}

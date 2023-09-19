@@ -31,7 +31,7 @@ export class LikesService {
 
     const totalCount = await this.likesRepository.count({
       where: {
-        postId: postId,
+        postId,
       },
     });
 
@@ -39,7 +39,7 @@ export class LikesService {
       skip: (currentPage - 1) * itemsPerPage,
       take: itemsPerPage,
       where: {
-        postId: postId,
+        postId,
       },
       select: {
         id: true,
@@ -82,8 +82,8 @@ export class LikesService {
 
     const likeExists = await this.likesRepository.findFirst({
       where: {
-        authorId: authorId,
-        postId: postId,
+        authorId,
+        postId,
       },
     });
 
