@@ -17,10 +17,10 @@ import {
 import { CreatePostDto } from '@modules/posts/dto/create-post.dto';
 import { UpdatePostDto } from '@modules/posts/dto/update-post.dto';
 import { ActiveUserRoleId } from '@decorators/ActiveUserRoleId';
+import type { QueryOptions } from '@interfaces/QueryOptions';
 import { MulterUploadImage } from '@utils/MulterUploadImage';
 import { PostsService } from '@modules/posts/posts.service';
 import { ActiveUserId } from '@decorators/ActiveUserId';
-import { QueryOptions } from '@interfaces/QueryOptions';
 
 @Controller('posts')
 export class PostsController {

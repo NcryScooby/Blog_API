@@ -8,7 +8,7 @@ import {
 import { CreateCategoryDto } from '@modules/categories/dto/create-category.dto';
 import { CategoriesRepository } from '@repositories/categories.repositories';
 import { RolesRepository } from '@repositories/roles.repositories';
-import { QueryOptions } from '@interfaces/QueryOptions';
+import type { QueryOptions } from '@interfaces/QueryOptions';
 
 @Injectable()
 export class CategoriesService {

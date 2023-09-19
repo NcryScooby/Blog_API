@@ -14,8 +14,8 @@ import {
 import { ActiveUserRoleId } from '@decorators/ActiveUserRoleId';
 import { CreateJobDto } from '@modules/jobs/dto/create-job.dto';
 import { UpdateJobDto } from '@modules/jobs/dto/update-job.dto';
+import type { QueryOptions } from '@interfaces/QueryOptions';
 import { JobsService } from '@modules/jobs/jobs.service';
-import { QueryOptions } from '@interfaces/QueryOptions';
 import { IsPublic } from '@decorators/IsPublic';
 
 @Controller('jobs')

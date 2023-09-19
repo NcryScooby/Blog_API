@@ -38,4 +38,3 @@ lerna-debug.log*
 .env
 /uploads/posts/*
 /uploads/users/*
-.vercel

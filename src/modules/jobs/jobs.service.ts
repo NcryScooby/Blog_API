@@ -9,7 +9,7 @@ import { RolesRepository } from '@repositories/roles.repositories';
 import { JobsRepository } from '@repositories/jobs.repositories';
 import { UpdateJobDto } from '@modules/jobs/dto/update-job.dto';
 import { CreateJobDto } from '@modules/jobs/dto/create-job.dto';
-import { QueryOptions } from '@interfaces/QueryOptions';
+import type { QueryOptions } from '@interfaces/QueryOptions';
 
 @Injectable()
 export class JobsService {

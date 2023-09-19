@@ -8,9 +8,9 @@ import {
   Query,
 } from '@nestjs/common';
 import { CreateLikeDto } from '@modules/likes/dto/create-like.dto';
+import type { QueryOptions } from '@interfaces/QueryOptions';
 import { LikesService } from '@modules/likes/likes.service';
 import { ActiveUserId } from '@decorators/ActiveUserId';
-import { QueryOptions } from '@interfaces/QueryOptions';
 
 @Controller('posts/likes')
 export class LikesController {

@@ -4,7 +4,7 @@ import { CommentsRepository } from '@repositories/comments.repositories';
 import { PostsRepository } from '@repositories/posts.repositories';
 import { RolesRepository } from '@repositories/roles.repositories';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { QueryOptions } from '@interfaces/QueryOptions';
+import type { QueryOptions } from '@interfaces/QueryOptions';
 import { USER_ROLES } from '@constants/user_roles';
 
 @Injectable()

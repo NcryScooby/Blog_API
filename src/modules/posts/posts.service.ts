@@ -8,7 +8,7 @@ import { UpdatePostDto } from '@modules/posts/dto/update-post.dto';
 import { CreatePostDto } from '@modules/posts/dto/create-post.dto';
 import { PostsRepository } from '@repositories/posts.repositories';
 import { RolesRepository } from '@repositories/roles.repositories';
-import { QueryOptions } from '@interfaces/QueryOptions';
+import type { QueryOptions } from '@interfaces/QueryOptions';
 import { USER_ROLES } from '@constants/user_roles';
 import { Prisma } from '@prisma/client';
 import * as path from 'path';

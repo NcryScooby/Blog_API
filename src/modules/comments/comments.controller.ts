@@ -15,8 +15,8 @@ import { CreateCommentDto } from '@modules/comments/dto/create-comment.dto';
 import { UpdateCommentDto } from '@modules/comments/dto/update-comment.dto';
 import { CommentsService } from '@modules/comments/comments.service';
 import { ActiveUserRoleId } from '@decorators/ActiveUserRoleId';
+import type { QueryOptions } from '@interfaces/QueryOptions';
 import { ActiveUserId } from '@decorators/ActiveUserId';
-import { QueryOptions } from '@interfaces/QueryOptions';
 
 @Controller('posts/comments')
 export class CommentsController {
