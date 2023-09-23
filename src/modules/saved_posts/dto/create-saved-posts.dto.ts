@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsUUID } from 'class-validator';
 
-export class CreateFavoriteDto {
+export class CreateSavedPostDto {
   @IsUUID()
   @IsNotEmpty()
   postId: string;

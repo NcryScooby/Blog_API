@@ -1,5 +1,5 @@
+import { SavedPostsModule } from '@modules/saved_posts/saved_posts.module';
 import { CategoriesModule } from '@modules/categories/categories.module';
-import { FavoritesModule } from './modules/favorites/favorites.module';
 import { CommentsModule } from '@modules/comments/comments.module';
 import { DatabaseModule } from '@database/database.module';
 import { PostsModule } from '@modules/posts/posts.module';
@@ -21,7 +21,7 @@ import { Module } from '@nestjs/common';
     JobsModule,
     CommentsModule,
     LikesModule,
-    FavoritesModule,
+    SavedPostsModule,
   ],
   controllers: [],
   providers: [

@@ -1,22 +1,22 @@
-import { FavoritesRepository } from '@src/shared/database/repositories/favorites.repositories';
+import { SavedPostsRepository } from '@src/shared/database/repositories/saved_posts.repositories';
 import { PostsRepository } from '@src/shared/database/repositories/posts.repositories';
 import type { QueryOptions } from '@src/shared/interfaces/QueryOptions';
-import { CreateFavoriteDto } from './dto/create-favorite.dto';
+import { CreateSavedPostDto } from './dto/create-saved-posts.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
-export class FavoritesService {
+export class SavedPostsService {
   constructor(
-    private readonly favoriteRepository: FavoritesRepository,
+    private readonly savedPostsRepository: SavedPostsRepository,
     private readonly postsRepository: PostsRepository,
   ) {}
 
-  async findFavorites(userId: string, { limit, page, orderBy }: QueryOptions) {
+  async findSavedPosts(userId: string, { limit, page, orderBy }: QueryOptions) {
     const itemsPerPage = Number(limit) || 20;
     const currentPage = Number(page) || 1;
     const order = orderBy !== 'asc' && orderBy !== 'desc' ? 'desc' : orderBy;
 
-    const favorites = await this.favoriteRepository.findMany({
+    const savedPosts = await this.savedPostsRepository.findMany({
       take: itemsPerPage,
       skip: itemsPerPage * (currentPage - 1),
       where: { userId },
@@ -65,18 +65,25 @@ export class FavoritesService {
       orderBy: { createdAt: order },
     });
 
-    if (favorites.length === 0 || !favorites) {
-      throw new NotFoundException('No favorite posts found');
+    if (savedPosts.length === 0 || !savedPosts) {
+      return {
+        savedPosts: [],
+        meta: {
+          totalCount: 0,
+          currentPage,
+          totalPages: 0,
+        },
+      };
     }
 
-    const totalCount = await this.favoriteRepository.count({
+    const totalCount = await this.savedPostsRepository.count({
       where: {
         userId,
       },
     });
 
     return {
-      favorites,
+      savedPosts,
       meta: {
         totalCount,
         currentPage,
@@ -85,8 +92,8 @@ export class FavoritesService {
     };
   }
 
-  async create(userId: string, createFavoriteDto: CreateFavoriteDto) {
-    const { postId } = createFavoriteDto;
+  async create(userId: string, createSavedPostDto: CreateSavedPostDto) {
+    const { postId } = createSavedPostDto;
 
     const postExists = await this.postsRepository.findUnique({
       where: {
@@ -98,17 +105,17 @@ export class FavoritesService {
       throw new NotFoundException('Post not found');
     }
 
-    const favoriteExists = await this.favoriteRepository.findFirst({
+    const savedPostExists = await this.savedPostsRepository.findFirst({
       where: {
         userId,
         postId,
       },
     });
 
-    if (favoriteExists) {
-      await this.favoriteRepository.delete({
+    if (savedPostExists) {
+      await this.savedPostsRepository.delete({
         where: {
-          id: favoriteExists.id,
+          id: savedPostExists.id,
         },
       });
 
@@ -117,7 +124,7 @@ export class FavoritesService {
       };
     }
 
-    await this.favoriteRepository.create({
+    await this.savedPostsRepository.create({
       data: {
         user: {
           connect: { id: userId },
