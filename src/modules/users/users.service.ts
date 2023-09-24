@@ -33,6 +33,11 @@ export class UsersService {
         joinedAt: true,
         countryOfBirth: true,
         bio: true,
+        savedPosts: {
+          select: {
+            postId: true,
+          },
+        },
       },
     });
 
