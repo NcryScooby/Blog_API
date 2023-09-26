@@ -33,15 +33,27 @@ export class UsersService {
         joinedAt: true,
         countryOfBirth: true,
         bio: true,
-        savedPosts: {
-          select: {
-            postId: true,
-          },
-        },
       },
     });
 
-    return { user };
+    const savedPosts = await this.postsRepository.findMany({
+      where: {
+        savedPosts: {
+          some: {
+            userId,
+          },
+        },
+      },
+      select: {
+        id: true,
+        image: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    return { user, savedPosts };
   }
 
   async getUserByUsername(username: string) {
@@ -130,12 +142,29 @@ export class UsersService {
         views: true,
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: 'asc',
       },
       take: 3,
     });
 
-    return { user: userWithStatistics, latestPosts };
+    const savedPosts = await this.postsRepository.findMany({
+      where: {
+        savedPosts: {
+          some: {
+            userId: user.id,
+          },
+        },
+      },
+      select: {
+        id: true,
+        image: true,
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
+
+    return { user: userWithStatistics, latestPosts, savedPosts };
   }
 
   async validateEmail(email: string) {
