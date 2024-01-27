@@ -2,6 +2,7 @@ import {
   BadRequestException,
   NotFoundException,
   Injectable,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { CategoriesRepository } from '@repositories/categories.repositories';
 import { UpdatePostDto } from '@modules/posts/dto/update-post.dto';
@@ -9,10 +10,9 @@ import { CreatePostDto } from '@modules/posts/dto/create-post.dto';
 import { PostsRepository } from '@repositories/posts.repositories';
 import { RolesRepository } from '@repositories/roles.repositories';
 import type { QueryOptions } from '@interfaces/QueryOptions';
+import { S3Storage } from '@src/shared/aws/S3Storage';
 import { USER_ROLES } from '@constants/user_roles';
 import { Prisma } from '@prisma/client';
-import * as path from 'path';
-import * as fs from 'fs';
 
 @Injectable()
 export class PostsService {
@@ -20,6 +20,7 @@ export class PostsService {
     private readonly postsRepository: PostsRepository,
     private readonly categoriesRepository: CategoriesRepository,
     private readonly rolesRepository: RolesRepository,
+    private readonly s3Storage: S3Storage,
   ) {}
   async findAll(title: string, { limit, page, orderBy }: QueryOptions) {
     const itemsPerPage = Number(limit) || 20;
@@ -499,7 +500,12 @@ export class PostsService {
     }
 
     if (post.image) {
-      await this.deleteImageFromFolder(post.image);
+      try {
+        const file = { filename: post.image } as Express.Multer.File;
+        this.s3Storage._removeFile(null, file, null);
+      } catch (err) {
+        throw new InternalServerErrorException('Error deleting image from S3');
+      }
     }
 
     const isUserAdmin = await this.validateIsAdminRole(roleId);
@@ -515,20 +521,6 @@ export class PostsService {
     });
   }
 
-  private async deleteImageFromFolder(image: string) {
-    const imagePath = path.join(__dirname, '../../../uploads/posts', image);
-
-    if (fs.existsSync(imagePath)) {
-      try {
-        await fs.promises.unlink(imagePath);
-      } catch (err) {
-        console.error('Error deleting image:', err);
-      }
-    } else {
-      console.error('Image not found at:', imagePath);
-    }
-  }
-
   private async validateTotalCount(title: string) {
     let totalCount = 0;
 
@@ -541,9 +533,11 @@ export class PostsService {
           },
         },
       });
-    } else {
-      totalCount = await this.postsRepository.count();
+
+      return totalCount;
     }
+
+    totalCount = await this.postsRepository.count();
 
     return totalCount;
   }
@@ -563,13 +557,15 @@ export class PostsService {
           },
         },
       });
-    } else {
-      totalCount = await this.postsRepository.count({
-        where: {
-          categoryId,
-        },
-      });
+
+      return totalCount;
     }
+
+    totalCount = await this.postsRepository.count({
+      where: {
+        categoryId,
+      },
+    });
 
     return totalCount;
   }
@@ -586,13 +582,15 @@ export class PostsService {
           },
         },
       });
-    } else {
-      totalCount = await this.postsRepository.count({
-        where: {
-          authorId,
-        },
-      });
+
+      return totalCount;
     }
+
+    totalCount = await this.postsRepository.count({
+      where: {
+        authorId,
+      },
+    });
 
     return totalCount;
   }
