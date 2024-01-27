@@ -223,9 +223,11 @@ export class CategoriesService {
           },
         },
       });
-    } else {
-      totalCount = await this.categoriesRepository.count();
+
+      return totalCount;
     }
+
+    totalCount = await this.categoriesRepository.count();
 
     return totalCount;
   }

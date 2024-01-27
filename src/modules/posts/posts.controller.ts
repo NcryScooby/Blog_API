@@ -21,6 +21,7 @@ import type { QueryOptions } from '@interfaces/QueryOptions';
 import { MulterUploadImage } from '@utils/MulterUploadImage';
 import { PostsService } from '@modules/posts/posts.service';
 import { ActiveUserId } from '@decorators/ActiveUserId';
+import { env } from '@src/shared/config/env';
 
 @Controller('posts')
 export class PostsController {
@@ -66,13 +67,13 @@ export class PostsController {
   }
 
   @Post()
-  @UseInterceptors(MulterUploadImage('posts'))
+  @UseInterceptors(MulterUploadImage('image'))
   create(
     @ActiveUserId() authorId: string,
     @Body() createPostDto: CreatePostDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    const image = file?.filename;
+    const image = `${env.awsCloudFrontUrl}/${file.filename}`;
 
     if (!image) throw new BadRequestException('Image is required');
 

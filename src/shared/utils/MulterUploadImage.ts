@@ -1,26 +1,17 @@
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { Request } from 'express';
+import { S3Storage } from '@src/shared/aws/S3Storage';
 
-const generateFilename = (
-  req: Request,
-  file: Express.Multer.File,
-  cb: (error: Error | null, filename: string) => void,
-) => {
-  cb(null, `${Date.now()}-${file.originalname}`);
-};
-
-const getFieldNameBasedOnPath = (path: string): string => {
-  return path.includes('users') ? 'avatar' : 'image';
-};
-
-export const MulterUploadImage = (path: string) => {
-  const fieldName = getFieldNameBasedOnPath(path);
+export const MulterUploadImage = (path: 'avatar' | 'image') => {
+  const fieldName = path;
 
   return FileInterceptor(fieldName, {
-    storage: diskStorage({
-      destination: `./uploads/${path}`,
-      filename: generateFilename,
-    }),
+    storage: new S3Storage(),
+    fileFilter: (req, file, cb) => {
+      if (!file.mimetype.match(/\/(jpg|jpeg|png|webp)$/)) {
+        return cb(new Error('Only image files are allowed'), false);
+      }
+
+      cb(null, true);
+    },
   });
 };

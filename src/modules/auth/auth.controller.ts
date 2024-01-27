@@ -11,6 +11,7 @@ import { AuthService } from '@modules/auth/auth.service';
 import { SignUpDto } from '@modules/auth/dto/signup.dto';
 import { SignInDto } from '@modules/auth/dto/signin.dto';
 import { IsPublic } from '@decorators/IsPublic';
+import { env } from '@src/shared/config/env';
 
 @Controller('auth')
 export class AuthController {
@@ -24,12 +25,12 @@ export class AuthController {
 
   @Post('signup')
   @IsPublic()
-  @UseInterceptors(MulterUploadImage('users'))
+  @UseInterceptors(MulterUploadImage('avatar'))
   create(
     @Body() signUpDto: SignUpDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    const avatar = file?.filename;
+    const avatar = `${env.awsCloudFrontUrl}/${file.filename}`;
 
     if (!avatar) throw new BadRequestException('Avatar is required');
 
