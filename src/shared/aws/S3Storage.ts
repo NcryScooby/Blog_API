@@ -8,8 +8,8 @@ export class S3Storage implements StorageEngine {
 
   constructor() {
     this.s3 = new S3({
-      accessKeyId: env.awsAccessKeyId,
-      secretAccessKey: env.awsSecretAccessKey,
+      accessKeyId: env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
     });
   }
 
@@ -20,7 +20,7 @@ export class S3Storage implements StorageEngine {
   ) {
     const filename = `${Date.now()}-${file.originalname}`;
     const params = {
-      Bucket: env.awsS3BucketName,
+      Bucket: env.AWS_S3_BUCKET_NAME,
       Key: filename,
       Body: file.stream,
       ContentType: file.mimetype,
@@ -42,7 +42,7 @@ export class S3Storage implements StorageEngine {
     cb: (error: Error | null) => void,
   ) {
     const params = {
-      Bucket: env.awsS3BucketName,
+      Bucket: env.AWS_S3_BUCKET_NAME,
       Key: file.filename.split('/').pop(),
     };
 

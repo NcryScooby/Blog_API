@@ -73,7 +73,7 @@ export class PostsController {
     @Body() createPostDto: CreatePostDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    const image = `${env.awsCloudFrontUrl}/${file.filename}`;
+    const image = `${env.AWS_CLOUDFRONT_URL}/${file.filename}`;
 
     if (!image) throw new BadRequestException('Image is required');
 

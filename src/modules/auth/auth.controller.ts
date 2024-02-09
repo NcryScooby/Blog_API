@@ -30,7 +30,7 @@ export class AuthController {
     @Body() signUpDto: SignUpDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    const avatar = `${env.awsCloudFrontUrl}/${file.filename}`;
+    const avatar = `${env.AWS_CLOUDFRONT_URL}/${file.filename}`;
 
     if (!avatar) throw new BadRequestException('Avatar is required');
 

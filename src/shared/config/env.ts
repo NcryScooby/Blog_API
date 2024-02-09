@@ -4,41 +4,46 @@ import { plainToInstance } from 'class-transformer';
 class Env {
   @IsString()
   @IsNotEmpty()
-  jwtSecret: string;
+  PORT: string;
 
   @IsString()
   @IsNotEmpty()
-  dbUrl: string;
+  JWT_SECRET: string;
 
   @IsString()
   @IsNotEmpty()
-  clientUrl: string;
+  DATABASE_URL: string;
 
   @IsString()
   @IsNotEmpty()
-  awsS3BucketName: string;
+  CLIENT_URL: string;
 
   @IsString()
   @IsNotEmpty()
-  awsCloudFrontUrl: string;
+  AWS_S3_BUCKET_NAME: string;
 
   @IsString()
   @IsNotEmpty()
-  awsAccessKeyId: string;
+  AWS_CLOUDFRONT_URL: string;
 
   @IsString()
   @IsNotEmpty()
-  awsSecretAccessKey: string;
+  AWS_ACCESS_KEY_ID: string;
+
+  @IsString()
+  @IsNotEmpty()
+  AWS_SECRET_ACCESS_KEY: string;
 }
 
 export const env: Env = plainToInstance(Env, {
-  dbUrl: process.env.DATABASE_URL,
-  jwtSecret: process.env.JWT_SECRET,
-  clientUrl: process.env.CLIENT_URL,
-  awsS3BucketName: process.env.AWS_S3_BUCKET_NAME,
-  awsCloudFrontUrl: process.env.AWS_CLOUDFRONT_URL,
-  awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  PORT: process.env.PORT,
+  DATABASE_URL: process.env.DATABASE_URL,
+  JWT_SECRET: process.env.JWT_SECRET,
+  CLIENT_URL: process.env.CLIENT_URL,
+  AWS_S3_BUCKET_NAME: process.env.AWS_S3_BUCKET_NAME,
+  AWS_CLOUDFRONT_URL: process.env.AWS_CLOUDFRONT_URL,
+  AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
 const errors = validateSync(env);
